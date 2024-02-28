@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js" integrity="sha512-uaz5GpnQoE6t5echKlX8P52czvsIGgLPcvlzfvRubLZ1Hp8JemUDnbUiAahbVtPb+jUVrNETuXvAhDDF/N3M4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Includes the p5.collide2D addon library -->
+    <script defer src="https://unpkg.com/p5.collide2d"></script>
+    <script src="path/to/p5.sound.js"></script>
+    <link href="https://fonts.cdnfonts.com/css/anurati" rel="stylesheet">
+    
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/anurati');
+        @keyframes PLAY_OPACITY {
+            0% {
+                opacity: 0;
+            }
+
+            90% {
+                opacity: 0;
+            }
+            
+            100% {
+                opacity: 1;
+            }
+        }
+        @keyframes title_opacity {
+            0%{
+                opacity: 0;
+            }
+            100%{
+                opacity: 1;
+            }
+        }
+        
+        
+
+
+
+
+
+
+        html, body{
+            position: relative;
+            width:auto;
+            height:auto;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            background-image: url('corn.png');
+            background-position: center;
+            background-repeat: repeat;
+            background-size: cover;
+        }
+        #TheTitle {
+            position: absolute;
+            transform: translate(-50%,-50%);
+            top: 40%;
+            left: 50%;
+            font-size: 128px;
+            color: white ;
+            font-family: 'Anurati', sans-serif;
+        }
+        
+        #Play_Button {
+            position: absolute;
+            transform: translate(-50%,-50%);
+            top: 80%;
+            left: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            background-color:transparent;
+            color: white ;
+            border: none;
+            border-radius: 5vh;
+            animation: PLAY_OPACITY 1s linear 1;
+            font-family: 'Anurati', sans-serif;
+            box-shadow: 0vw 0vh 10vh 0vw white;
+            padding: 2vw;
+            
+        }
+
+
+    </style>
+    <title>Moon_GEN_</title>
+
+</head>
+<body>
+    <script>
+
+        let window_w = window.innerWidth
+        let window_h = window.innerHeight
+        function setup() {
+            createCanvas(window_w,window_h)
+            
+        }
+        function draw() {
+
+            }
+
+        function Play_Button(){
+            
+        }
+
+    </script>
+    <h1 id="TheTitle">MN_GEN_</h1>
+    <button onclick="PlayButton()" id="Play_Button"><h2>PLAY</h2></button>
+    <div id = 'black_transition'></div>
+    
+    
+</body>
+</html>
