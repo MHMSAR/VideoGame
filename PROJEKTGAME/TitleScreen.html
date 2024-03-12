@@ -11,30 +11,40 @@
     
     <style>
         @import url('https://fonts.cdnfonts.com/css/anurati');
-        @keyframes PLAY_OPACITY {
+        @keyframes OPACITY {
             0% {
                 opacity: 0;
             }
-
-            90% {
+            20%{
+                opacity: 1;
+            }
+            40%{
                 opacity: 0;
             }
+
+            60%{
+                opacity: 1;
+            }
+
+            80%{opacity: 0;}
             
             100% {
                 opacity: 1;
             }
         }
-        @keyframes title_opacity {
+        @keyframes FADE {
             0%{
-                opacity: 0;
-            }
-            100%{
                 opacity: 1;
             }
+            50%{
+                opacity: 0;
+                
+            }
+            100%{
+                opacity: 0;
+                left: -1000px;
+            }
         }
-        
-        
-
 
 
 
@@ -51,19 +61,25 @@
             background-position: center;
             background-repeat: repeat;
             background-size: cover;
+            background: linear-gradient(to top, #87CEEB 0%, #4682B4 50%, #000080 100%)
         }
         #TheTitle {
             position: absolute;
             transform: translate(-50%,-50%);
-            top: 40%;
+            top: 30%;
             left: 50%;
             font-size: 128px;
             color: white ;
             font-family: 'Anurati', sans-serif;
+            animation: OPACITY 3s linear 1;
+            
         }
+
         
-        #Play_Button {
-            position: absolute;
+
+
+        /* #Play_Button { */
+            /* position: absolute;
             transform: translate(-50%,-50%);
             top: 80%;
             left: 50%;
@@ -78,7 +94,7 @@
             box-shadow: 0vw 0vh 10vh 0vw white;
             padding: 2vw;
             
-        }
+        } */
 
 
     </style>
@@ -87,26 +103,83 @@
 </head>
 <body>
     <script>
-
+        
+        let buttonX = 250
+        let buttonY = 150
+        let button
         let window_w = window.innerWidth
         let window_h = window.innerHeight
+        let TheTitle
+        let E_rails
+    
+        
+        
         function setup() {
-            createCanvas(window_w,window_h)
+           
+
+            window.alert('press F11 or something for full screen.')
+
+            createCanvas(window_w, window_h).id('p5Canvas');
+            //create the title
+
+            TheTitle = select('#TheTitle');
+              // Create a button with the label "Click me"
+            button = createButton('PLAY');
+            E_rails = createDiv();
+            E_rails.position('200%','0%')
+                // Set the position of the button
+            // button.position(buttonX, buttonY);
+
+                // Attach a callback function to the button for when it is pressed
+            button.mousePressed(Play_Button);
+
+
+            button.style('position', 'absolute');
+            button.style('transform', 'translate(-50%, -50%)');
+            button.style('top', '70%');
+            button.style('left', '50%');
+            button.style('font-size', '24px');
+            button.style('cursor', 'pointer');
+            button.style('background-color', 'transparent');
+            button.style('color', 'white');
+            button.style('border', 'none');
+            button.style('border-radius', '5vh');
+            button.style('animation', 'OPACITY 1s linear 1');
+            button.style('font-family', "'Anurati', sans-serif");
+            button.style('box-shadow', '0vw 0vh 10vh 0vw white');
+            button.style('padding', '2vw');
+            E_rails.style('position', 'absolute');
+            E_rails.style('transform', 'translate(-50%, -50%)');
+            E_rails.style('background-color','red')
+            E_rails.style('width','auto')
+            E_rails.style('height','auto')
+            E_rails.style('background-img','erails.jpg')
+            E_rails.style('background-size','cover')
+            E_rails.style('background-repeat','no-repeat')
+            
             
         }
+        
         function draw() {
-
+            
             }
 
         function Play_Button(){
-            
+            console.log('Button pressed!');
+            button.style('animation', 'FADE 5s linear 1');
+            button.style('opacity', '0');
+            button.style('left', '-100');
+            button.style('cursor','defalt')
+            TheTitle.style('animation', 'FADE 5s linear 1');
+            TheTitle.style('opacity', '0');
+            TheTitle.style('left', '-100');
         }
 
     </script>
+    <canvas id="p5Canvas"></canvas>
     <h1 id="TheTitle">MN_GEN_</h1>
-    <button onclick="PlayButton()" id="Play_Button"><h2>PLAY</h2></button>
-    <div id = 'black_transition'></div>
     
+
     
 </body>
 </html>
