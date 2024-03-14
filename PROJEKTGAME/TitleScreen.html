@@ -45,6 +45,15 @@
                 left: -1000px;
             }
         }
+        @keyframes rail {
+            0%{
+                left: 150%;
+            }
+            100%{
+                left: 50%;
+            }
+            
+        }
 
 
 
@@ -117,7 +126,7 @@
         function setup() {
            
 
-            window.alert('press F11 or something for full screen.')
+            // window.alert('press F11 or something for full screen.')
 
             createCanvas(window_w, window_h).id('p5Canvas');
             //create the title
@@ -125,8 +134,8 @@
             TheTitle = select('#TheTitle');
               // Create a button with the label "Click me"
             button = createButton('PLAY');
-            E_rails = createDiv();
-            E_rails.position('200%','0%')
+            
+            
                 // Set the position of the button
             // button.position(buttonX, buttonY);
 
@@ -148,14 +157,21 @@
             button.style('font-family', "'Anurati', sans-serif");
             button.style('box-shadow', '0vw 0vh 10vh 0vw white');
             button.style('padding', '2vw');
+
+
+            E_rails = createDiv();
+            // E_rails.position(0, 0);
             E_rails.style('position', 'absolute');
             E_rails.style('transform', 'translate(-50%, -50%)');
-            E_rails.style('background-color','red')
-            E_rails.style('width','auto')
-            E_rails.style('height','auto')
-            E_rails.style('background-img','erails.jpg')
-            E_rails.style('background-size','cover')
+            E_rails.style('top', '50%');
+            E_rails.style('left', '500%');
+            E_rails.style('width','800px')
+            E_rails.style('height','100%')
+            // E_rails.style('background-color','red')
+            E_rails.style('background-image','url(ers.png)')
             E_rails.style('background-repeat','no-repeat')
+            E_rails.style('background-size','cover')
+            // E_rails.style('animation','rail 1s linear 1')
             
             
         }
@@ -173,6 +189,8 @@
             TheTitle.style('animation', 'FADE 5s linear 1');
             TheTitle.style('opacity', '0');
             TheTitle.style('left', '-100');
+            E_rails.style('animation','rail 5s linear 1')
+            E_rails.style('left','50%')
         }
 
     </script>
