@@ -6,7 +6,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js" integrity="sha512-uaz5GpnQoE6t5echKlX8P52czvsIGgLPcvlzfvRubLZ1Hp8JemUDnbUiAahbVtPb+jUVrNETuXvAhDDF/N3M4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Includes the p5.collide2D addon library -->
     <script defer src="https://unpkg.com/p5.collide2d"></script>
-    <script src="path/to/p5.sound.js"></script>
+    <script src="p5.sound.js"></script>
     <link href="https://fonts.cdnfonts.com/css/anurati" rel="stylesheet">
     
     <style>
@@ -50,7 +50,7 @@
                 left: 150%;
             }
             100%{
-                left: 50%;
+                left: 46%;
             }
             
         }
@@ -132,17 +132,21 @@
         let E_rails
         let eav_load
         let eav_shown
-        let eav_X  
-        let eav_Y 
+        let eav_X = (window_w/2)-((0.55*window_h)/2)
+        let eav_Y = window_h*1.4
+        let PB = false
+        let EAV_sound
     
         
         function preload() {
             // eav_load = loadImage('EAV.gif')//finds the img and starts rendring it
             // eav_load.position(500,500)
 
-            eav_shown = createImg('EAV.gif',100,100)// shows final render
-            eav_shown.position((window_w/2)-((0.45*window_w)/2),350)
-            eav_shown.size(0.45*window_w,0.55*window_h)
+            eav_shown = createImg('EAV.gif')// shows final render
+            eav_shown.position(eav_X,eav_Y)//half of the window - half of the image = centered
+            eav_shown.size(0.55*window_h,0.55*window_h)
+
+            EAV_sound = loadSound('EAVup.mp3')
         }
 
 
@@ -192,7 +196,7 @@
             E_rails.style('width','800px')
             E_rails.style('height','100%')
             // E_rails.style('background-color','red')
-            E_rails.style('background-image','url(ers.png)')
+            E_rails.style('background-image','url(ERS.png)')
             E_rails.style('background-repeat','no-repeat')
             E_rails.style('background-size','cover')
             // E_rails.style('animation','rail 1s linear 1')
@@ -212,12 +216,9 @@
 
 
         }
-        
-        function draw() {
-            
-            }
 
         function Play_Button(){
+            PB = true 
             console.log('Button pressed!');
             button.style('animation', 'FADE 5s linear 1');
             button.style('opacity', '0');
@@ -227,10 +228,27 @@
             TheTitle.style('opacity', '0');
             TheTitle.style('left', '-100');
             E_rails.style('animation','rail 5s linear 1')
-            E_rails.style('left','50%')
-
+            E_rails.style('left','46%')
+            EAV_sound.setVolume(0.2)
+            EAV_sound.play()
             // eav.style('animation','eav_ani 20s linear 1')
         }
+
+        function draw() {
+            if (PB == true) {
+                eav_Y-=3
+                eav_shown.position(eav_X,eav_Y)
+                console.log(eav_Y)
+                if (eav_Y < -1000){ //lunar lab value set to true
+                    console.log('sending entity...')
+                    window.location.href = 'LunarLab.html'
+
+                    localStorage.setItem('lunar_lab_quicksave','true')
+                    // store change other values to false
+                }
+            }
+        }
+        
 
     </script>
     <canvas id="p5Canvas"></canvas>
