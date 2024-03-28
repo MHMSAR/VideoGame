@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +77,6 @@
             padding: 0;
             margin: 0;
             overflow: hidden;
-            background-image: url('corn.png');
             background-position: center;
             background-repeat: repeat;
             background-size: cover;
@@ -130,21 +130,29 @@
         let window_h = window.innerHeight
         let TheTitle
         let E_rails
+        let ers_x = ((window_w/2)-640)+window_w/1.5
+        let ers_y
         let eav_load
         let eav_shown
         let eav_X = (window_w/2)-((0.55*window_h)/2)
-        let eav_Y = window_h*1.4
+        let eav_Y = window_h*1.5
         let PB = false
         let EAV_sound
     
         
         function preload() {
+            window.alert('press F11 or something for full screen.')
+
             // eav_load = loadImage('EAV.gif')//finds the img and starts rendring it
             // eav_load.position(500,500)
 
             eav_shown = createImg('EAV.gif')// shows final render
             eav_shown.position(eav_X,eav_Y)//half of the window - half of the image = centered
             eav_shown.size(0.55*window_h,0.55*window_h)
+            
+            E_rails = createImg('ERS.png')
+            E_rails.position(ers_x,ers_y)
+            E_rails.size()
 
             EAV_sound = loadSound('EAVup.mp3')
         }
@@ -154,7 +162,6 @@
         function setup() {
            
 
-            // window.alert('press F11 or something for full screen.')
 
             createCanvas(window_w, window_h).id('p5Canvas');
             //create the title
@@ -187,18 +194,18 @@
             button.style('padding', '2vw');
 
 
-            E_rails = createDiv();
+            // E_rails = createDiv();
             // E_rails.position(0, 0);
-            E_rails.style('position', 'absolute');
-            E_rails.style('transform', 'translate(-50%, -50%)');
-            E_rails.style('top', '50%');
-            E_rails.style('left', '500%');
-            E_rails.style('width','800px')
-            E_rails.style('height','100%')
-            // E_rails.style('background-color','red')
-            E_rails.style('background-image','url(ERS.png)')
-            E_rails.style('background-repeat','no-repeat')
-            E_rails.style('background-size','cover')
+            // E_rails.style('position', 'absolute');
+            // E_rails.style('transform', 'translate(-50%, -50%)');
+            // E_rails.style('top', '50%');
+            // E_rails.style('left', '500%');
+            // E_rails.style('width','800px')
+            // E_rails.style('height','100%')
+            // // E_rails.style('background-color','red')
+            // E_rails.style('background-image','url(ERS.png)')
+            // E_rails.style('background-repeat','no-repeat')
+            // E_rails.style('background-size','cover')
             // E_rails.style('animation','rail 1s linear 1')
             
 
@@ -227,8 +234,8 @@
             TheTitle.style('animation', 'FADE 5s linear 1');
             TheTitle.style('opacity', '0');
             TheTitle.style('left', '-100');
-            E_rails.style('animation','rail 5s linear 1')
-            E_rails.style('left','46%')
+            // E_rails.style('animation','rail 5s linear 1')
+            // E_rails.style('left','46%')
             EAV_sound.setVolume(0.2)
             EAV_sound.play()
             // eav.style('animation','eav_ani 20s linear 1')
@@ -237,15 +244,23 @@
         function draw() {
             if (PB == true) {
                 eav_Y-=3
-                eav_shown.position(eav_X,eav_Y)
-                console.log(eav_Y)
+                eav_shown.position(eav_X,eav_Y) 
+                console.log('eav',eav_Y)
+                
+
                 if (eav_Y < -1000){ //lunar lab value set to true
                     console.log('sending entity...')
-                    window.location.href = 'LunarLab.html'
+                    // window.location.href = 'LunarLab.html'
 
                     localStorage.setItem('lunar_lab_quicksave','true')
                     // store change other values to false
                 }
+            }
+            if ((PB == true)&&(ers_x>(window_w/2)-640)){
+                ers_x-=6
+                E_rails.position(ers_x,ers_y)
+                console.log('ers',ers_x)
+
             }
         }
         
