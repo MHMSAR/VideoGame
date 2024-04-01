@@ -141,7 +141,7 @@
     
         
         function preload() {
-            window.alert('press F11 or something for full screen.')
+            
 
             // eav_load = loadImage('EAV.gif')//finds the img and starts rendring it
             // eav_load.position(500,500)
@@ -152,9 +152,10 @@
             
             E_rails = createImg('ERS.png')
             E_rails.position(ers_x,ers_y)
-            E_rails.size()
+            E_rails.size(1280,2460)
 
             EAV_sound = loadSound('EAVup.mp3')
+            window.alert('press F11 or something for full screen.')
         }
 
 
@@ -250,7 +251,7 @@
 
                 if (eav_Y < -1000){ //lunar lab value set to true
                     console.log('sending entity...')
-                    // window.location.href = 'LunarLab.html'
+                    window.location.href = 'LunarLab.html'
 
                     localStorage.setItem('lunar_lab_quicksave','true')
                     // store change other values to false
