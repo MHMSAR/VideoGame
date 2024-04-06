@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js" integrity="sha512-uaz5GpnQoE6t5echKlX8P52czvsIGgLPcvlzfvRubLZ1Hp8JemUDnbUiAahbVtPb+jUVrNETuXvAhDDF/N3M4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Includes the p5.collide2D addon library -->
+    <script defer src="https://unpkg.com/p5.collide2d"></script>
+    <script src="p5.sound.js"></script>
+    <title>Lunar_Lab</title>
+    <style>
+        html, body{
+            position: relative;
+            width:auto;
+            height:auto;
+            padding-left: 12.5vw;
+            padding-right: 12.5vw;
+            margin: 0;
+            
+            overflow: hidden;
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        let window_w = window.innerWidth
+        let window_h = window.innerHeight
+        let canvas
+        
+        let player_sprite_idle_direction_right
+        let player_sprite_idle_direction_left
+        let sprite_direction = false //left is true and vice versa
+
+        let player_sprite_run_right
+
+
+
+        function preload() {
+            player_sprite_idle_direction_left = createImg('astrobob_left.gif')
+            player_sprite_idle_direction_left.size(144,144)
+            player_sprite_idle_direction_left.style('position','absolute')
+            player_sprite_idle_direction_left.hide()
+
+            player_sprite_idle_direction_right = createImg('astrobob_right.gif')
+            player_sprite_idle_direction_right.size(144,144)
+            player_sprite_idle_direction_right.style('position','absolute')
+            player_sprite_idle_direction_right.hide()
+
+            player_sprite_run_right = createImg('astrobob_walk_right.gif')
+            player_sprite_run_right.size(144,144)
+            player_sprite_run_right.style('position','absolute')
+            player_sprite_run_right.hide()
+            // use show to reverse
+        }
+
+        function setup() {
+            canvas = createCanvas(window_h,window_h)
+            // let canvasX = (windowWidth - width) / 2
+            // let canvasY = (windowHeight - height) / 2
+            // canvas.position(canvasX, canvasY);
+            
+            
+
+            
+        }
+
+        function player_movement(){
+            
+            
+
+
+            if (keyIsDown(LEFT_ARROW)){
+                sprite_direction = true
+                player_sprite_run_right.hide()
+                player_sprite_idle_direction_left.hide()
+                player_sprite_idle_direction_right.hide()
+
+            }
+            if (keyIsDown(RIGHT_ARROW)) {
+                sprite_direction = false
+                player_sprite_run_right.show()
+                player_sprite_idle_direction_left.hide()
+                player_sprite_idle_direction_right.hide()
+            }
+            if (keyIsDown(UP_ARROW)) {
+
+            }
+            if (keyIsDown(DOWN_ARROW)) {
+
+            }
+            
+            if ((sprite_direction == true) &&(keyIsDown(LEFT_ARROW) == false ) &&(keyIsDown(RIGHT_ARROW) == false )){
+                player_sprite_idle_direction_left.show()
+                player_sprite_idle_direction_right.hide()
+                player_sprite_run_right.hide()
+            }
+            if (sprite_direction == false &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false ) ){
+                player_sprite_idle_direction_left.hide()
+                player_sprite_idle_direction_right.show()
+                player_sprite_run_right.hide()
+            }
+
+
+        }
+
+
+
+        function draw() {
+            background(100,)
+            player_movement()
+            rect(50,50,55,55)
+
+
+
+
+
+
+
+        }
+    </script>
+    
+</body>
+</html>
