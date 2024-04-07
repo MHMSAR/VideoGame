@@ -4,28 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js" integrity="sha512-uaz5GpnQoE6t5echKlX8P52czvsIGgLPcvlzfvRubLZ1Hp8JemUDnbUiAahbVtPb+jUVrNETuXvAhDDF/N3M4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- <script defer src="https://unpkg.com/p5"></script> -->
     <!-- Includes the p5.collide2D addon library -->
     <script defer src="https://unpkg.com/p5.collide2d"></script>
     <script src="p5.sound.js"></script>
     <title>Lunar_Lab</title>
     <style>
         html, body{
-            position: relative;
-            width:auto;
-            height:auto;
-            padding-left: 12.5vw;
-            padding-right: 12.5vw;
             margin: 0;
-            
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             overflow: hidden;
             background-color: black;
         }
+        
+
+
+
     </style>
 </head>
 <body>
     <script>
-        let window_w = window.innerWidth
-        let window_h = window.innerHeight
+        let window_w = (window.innerWidth)
+        let window_h = (window.innerHeight)
         let canvas
         
         let player_sprite_idle_direction_right
@@ -33,10 +37,23 @@
         let sprite_direction = false //left is true and vice versa
 
         let player_sprite_run_right
+        let player_sprite_run_left
 
+        let player_x = (window_w/2 - 107)
+        let player_y = (window_h/2 - 107)
+        
 
+        let maphitboxX = ((window_h - (window_h-275))/2)
+        let maphitboxY = ((window_h - (window_h-275))/2)
 
-        function preload() {
+        let hit_left = false
+        let hit_right = false
+        let hit_up = false
+        let hit_down = false
+
+        let gif
+
+        function sprites(){
             player_sprite_idle_direction_left = createImg('astrobob_left.gif')
             player_sprite_idle_direction_left.size(144,144)
             player_sprite_idle_direction_left.style('position','absolute')
@@ -51,6 +68,18 @@
             player_sprite_run_right.size(144,144)
             player_sprite_run_right.style('position','absolute')
             player_sprite_run_right.hide()
+
+            player_sprite_run_left = createImg('astrobob_walk_left.gif')
+            player_sprite_run_left.size(144,144)
+            player_sprite_run_left.style('position','absolute')
+            player_sprite_run_left.hide()
+        }
+
+
+
+        function preload() {
+            sprites()
+            gif = createImg('EAV.gif')
             // use show to reverse
         }
 
@@ -60,14 +89,16 @@
             // let canvasY = (windowHeight - height) / 2
             // canvas.position(canvasX, canvasY);
             
-            
+            gif.elt.onload = function() {
+              gif.parent('canvas-container');
+            };
 
             
         }
 
-        function player_movement(){
+        function player_sprite(){
             
-            
+            rect(player_x-750,player_y,144,144)
 
 
             if (keyIsDown(LEFT_ARROW)){
@@ -75,43 +106,159 @@
                 player_sprite_run_right.hide()
                 player_sprite_idle_direction_left.hide()
                 player_sprite_idle_direction_right.hide()
+                player_sprite_run_left.show()
 
             }
+
+
+
             if (keyIsDown(RIGHT_ARROW)) {
                 sprite_direction = false
                 player_sprite_run_right.show()
                 player_sprite_idle_direction_left.hide()
                 player_sprite_idle_direction_right.hide()
+                player_sprite_run_left.hide()
             }
+
+
+
             if (keyIsDown(UP_ARROW)) {
-
+                if (sprite_direction){
+                    player_sprite_run_right.hide()
+                    player_sprite_idle_direction_left.hide()
+                    player_sprite_idle_direction_right.hide()
+                    player_sprite_run_left.show()
+                }
+                else {
+                    player_sprite_run_right.show()
+                    player_sprite_idle_direction_left.hide()
+                    player_sprite_idle_direction_right.hide()
+                    player_sprite_run_left.hide()
+                }
             }
+
+
+
             if (keyIsDown(DOWN_ARROW)) {
-
+                if (sprite_direction){
+                    player_sprite_run_right.hide()
+                    player_sprite_idle_direction_left.hide()
+                    player_sprite_idle_direction_right.hide()
+                    player_sprite_run_left.show()
+                }
+                else {
+                    player_sprite_run_right.show()
+                    player_sprite_idle_direction_left.hide()
+                    player_sprite_idle_direction_right.hide()
+                    player_sprite_run_left.hide()
+                }
             }
+
+
             
-            if ((sprite_direction == true) &&(keyIsDown(LEFT_ARROW) == false ) &&(keyIsDown(RIGHT_ARROW) == false )){
+            if (sprite_direction == true &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false )  &&(keyIsDown(UP_ARROW) == false ) &&(keyIsDown(DOWN_ARROW) == false )){
+                // idle ani
+                //  overides the walking animation with idle
+
                 player_sprite_idle_direction_left.show()
                 player_sprite_idle_direction_right.hide()
                 player_sprite_run_right.hide()
+                player_sprite_run_left.hide()
             }
-            if (sprite_direction == false &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false ) ){
+            if (sprite_direction == false &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false )  &&(keyIsDown(UP_ARROW) == false ) &&(keyIsDown(DOWN_ARROW) == false )){
+                // idle ani
+                //  overides the walking animation with idle
+
                 player_sprite_idle_direction_left.hide()
                 player_sprite_idle_direction_right.show()
                 player_sprite_run_right.hide()
+                player_sprite_run_left.hide()
             }
 
 
         }
 
+        
+
+
+        function player_movement() {
+            player_sprite_idle_direction_left.position(player_x,player_y)
+            player_sprite_idle_direction_right.position(player_x,player_y)
+            player_sprite_run_left.position(player_x,player_y)
+            player_sprite_run_right.position(player_x,player_y)
+
+            if (keyIsDown(LEFT_ARROW)){
+                player_x -= 5
+                
+
+            }
+
+
+
+            if (keyIsDown(RIGHT_ARROW)) {
+                player_x += 5
+                
+            }
+
+
+
+            if (keyIsDown(UP_ARROW)) {
+                player_y -= 5
+            }
+
+
+
+            if (keyIsDown(DOWN_ARROW)) {
+                player_y += 5
+            }
+
+
+            
+            if (sprite_direction == true &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false )  &&(keyIsDown(UP_ARROW) == false ) &&(keyIsDown(DOWN_ARROW) == false )){
+                //  overides the walking animation with idle
+                
+            }
+            if (sprite_direction == false &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false )  &&(keyIsDown(UP_ARROW) == false ) &&(keyIsDown(DOWN_ARROW) == false )){ 
+                //  overides the walking animation with idle
+
+            }
+            
+
+
+
+
+
+
+        }
+
+        
+        function border() {
+            // noStroke()
+            fill(0,0,0,0)
+            rect(0,window_h-64,window_h,0)// bottom
+            rect(0,0,64,window_h)// left
+            rect(window_h-64,0,64,window_h) // rihgt
+            rect(0,0,window_h,64) // down
+
+            hit_left = collideRectRect(player_x-750, player_y, 144, 144, 0, 0, 64, window_h)// first four is sprite, vice versa
+
+
+            
+
+        }
+        
 
 
         function draw() {
-            background(100,)
+            background(100)
+            
+            
+            border()
+            player_sprite()
             player_movement()
-            rect(50,50,55,55)
-
-
+            // image(gif, 0, 0, width, height);
+            console.log(hit_left)
+            
 
 
 
