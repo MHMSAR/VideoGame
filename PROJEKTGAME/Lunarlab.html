@@ -39,39 +39,46 @@
         let player_sprite_run_right
         let player_sprite_run_left
 
-        let player_x = (window_w/2 - 107)
-        let player_y = (window_h/2 - 107)
+        let player_x = (window_w/2)
+        let player_y = (window_h/2)
         
 
-        let maphitboxX = ((window_h - (window_h-275))/2)
-        let maphitboxY = ((window_h - (window_h-275))/2)
+        // let maphitboxX = ((window_h - (window_h-275))/2)
+        // let maphitboxY = ((window_h - (window_h-275))/2)
 
         let hit_left = false
         let hit_right = false
         let hit_up = false
         let hit_down = false
 
-        let gif
+
+        let hitbox_playerX = (window_h/2-72)
+        let hitbox_playerY = (window_h/2-72)
+        
 
         function sprites(){
             player_sprite_idle_direction_left = createImg('astrobob_left.gif')
             player_sprite_idle_direction_left.size(144,144)
             player_sprite_idle_direction_left.style('position','absolute')
+            player_sprite_idle_direction_left.style('transform', 'translate(-50%, -50%)')
             player_sprite_idle_direction_left.hide()
 
             player_sprite_idle_direction_right = createImg('astrobob_right.gif')
             player_sprite_idle_direction_right.size(144,144)
             player_sprite_idle_direction_right.style('position','absolute')
+            player_sprite_idle_direction_right.style('transform', 'translate(-50%, -50%)')
             player_sprite_idle_direction_right.hide()
 
             player_sprite_run_right = createImg('astrobob_walk_right.gif')
             player_sprite_run_right.size(144,144)
             player_sprite_run_right.style('position','absolute')
+            player_sprite_run_right.style('transform', 'translate(-50%, -50%)')
             player_sprite_run_right.hide()
 
             player_sprite_run_left = createImg('astrobob_walk_left.gif')
             player_sprite_run_left.size(144,144)
             player_sprite_run_left.style('position','absolute')
+            player_sprite_run_left.style('transform', 'translate(-50%, -50%)')
             player_sprite_run_left.hide()
         }
 
@@ -79,7 +86,7 @@
 
         function preload() {
             sprites()
-            gif = createImg('EAV.gif')
+            
             // use show to reverse
         }
 
@@ -89,16 +96,15 @@
             // let canvasY = (windowHeight - height) / 2
             // canvas.position(canvasX, canvasY);
             
-            gif.elt.onload = function() {
-              gif.parent('canvas-container');
-            };
-
             
         }
 
         function player_sprite(){
+
             
-            rect(player_x-750,player_y,144,144)
+
+            
+            rect(hitbox_playerX,hitbox_playerY,144,144)//player hitbox
 
 
             if (keyIsDown(LEFT_ARROW)){
@@ -187,29 +193,32 @@
             player_sprite_run_left.position(player_x,player_y)
             player_sprite_run_right.position(player_x,player_y)
 
-            if (keyIsDown(LEFT_ARROW)){
+            if (keyIsDown(LEFT_ARROW)&& hit_left == false){
                 player_x -= 5
+                hitbox_playerX -=5
                 
 
             }
 
 
 
-            if (keyIsDown(RIGHT_ARROW)) {
+            if (keyIsDown(RIGHT_ARROW)&& hit_right == false) {
                 player_x += 5
-                
+                hitbox_playerX +=5
             }
 
 
 
-            if (keyIsDown(UP_ARROW)) {
+            if (keyIsDown(UP_ARROW)&& hit_up== false) {
                 player_y -= 5
+                hitbox_playerY -= 5
             }
 
 
 
-            if (keyIsDown(DOWN_ARROW)) {
+            if (keyIsDown(DOWN_ARROW)&& hit_down == false) {
                 player_y += 5
+                hitbox_playerY +=5
             }
 
 
@@ -235,12 +244,15 @@
         function border() {
             // noStroke()
             fill(0,0,0,0)
-            rect(0,window_h-64,window_h,0)// bottom
-            rect(0,0,64,window_h)// left
-            rect(window_h-64,0,64,window_h) // rihgt
-            rect(0,0,window_h,64) // down
+            rect(0,window_h-4,window_h,0)// bottom
+            rect(-60,0,64,window_h)// left
+            rect(window_h-4,0,64,window_h) // rihgt
+            rect(0,-60,window_h,64) // up
 
-            hit_left = collideRectRect(player_x-750, player_y, 144, 144, 0, 0, 64, window_h)// first four is sprite, vice versa
+            hit_left = collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144, -60, 0, 64, window_h)// first four is sprite, vice versa
+            hit_right = collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144, window_h-4,0,64,window_h)
+            hit_down = collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144, 0,window_h-4,window_h,0)
+            hit_up = collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,0,-60,window_h,64)
 
 
             
@@ -257,7 +269,7 @@
             player_sprite()
             player_movement()
             // image(gif, 0, 0, width, height);
-            console.log(hit_left)
+            console.log(hit_left,hit_down,hit_right,hit_up)
             
 
 
