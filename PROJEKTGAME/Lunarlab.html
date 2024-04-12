@@ -54,6 +54,19 @@
 
         let hitbox_playerX = (window_h/2-72)
         let hitbox_playerY = (window_h/2-72)
+
+
+        let map_sprite
+        let Xmap_sprite =0
+        let Ymap_sprite = 100
+
+
+
+
+
+
+
+
         
 
         function sprites(){
@@ -85,13 +98,17 @@
 
 
         function preload() {
+            map_sprite = loadImage('lunarlab.png')
             sprites()
             
-            // use show to reverse
+
+            
+           
         }
 
         function setup() {
             canvas = createCanvas(window_h,window_h)
+            
             // let canvasX = (windowWidth - width) / 2
             // let canvasY = (windowHeight - height) / 2
             // canvas.position(canvasX, canvasY);
@@ -242,6 +259,8 @@
 
         
         function border() {
+
+
             
             fill(0,0,0,0)
             rect(0,window_h-4,window_h,0)// bottom
@@ -261,15 +280,32 @@
         
 
 
+        function map_movement(){
+            map_sprite.resize(3700,3700)
+            image(map_sprite,Xmap_sprite,Ymap_sprite)
+
+            if (hit_right && keyIsDown(RIGHT_ARROW)) {
+                Xmap_sprite -= 5
+            }
+            if (hit_down && keyIsDown(DOWN_ARROW)) {
+                Ymap_sprite -= 5
+            }
+        }
+
+
+
+
+
         function draw() {
             background(100)
             noStroke()
-            
             border()
+            map_movement()
+            
             player_sprite()
             player_movement()
             // image(gif, 0, 0, width, height);
-            console.log(hit_left,hit_down,hit_right,hit_up)
+            console.log(hit_right)
             
 
 
