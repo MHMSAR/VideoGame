@@ -1,12 +1,13 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js" integrity="sha512-uaz5GpnQoE6t5echKlX8P52czvsIGgLPcvlzfvRubLZ1Hp8JemUDnbUiAahbVtPb+jUVrNETuXvAhDDF/N3M4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="p5.js" ></script>
     <!-- <script defer src="https://unpkg.com/p5"></script> -->
     <!-- Includes the p5.collide2D addon library -->
-    <script defer src="https://unpkg.com/p5.collide2d"></script>
+    <script defer src="p5.collide2d.js"></script>
     <script src="p5.sound.js"></script>
     <title>Lunar_Lab</title>
     <style>
@@ -57,10 +58,11 @@
 
 
         let map_sprite
-        let Xmap_sprite =0
-        let Ymap_sprite = 100
+        let Xmap_sprite = 450
+        let Ymap_sprite = 120
 
-
+        let FDHB = false
+        let discoveredFDHB = false
 
 
 
@@ -95,8 +97,6 @@
             player_sprite_run_left.hide()
         }
 
-
-
         function preload() {
             map_sprite = loadImage('lunarlab.png')
             sprites()
@@ -113,7 +113,7 @@
             // let canvasY = (windowHeight - height) / 2
             // canvas.position(canvasX, canvasY);
             
-            
+            map_sprite.resize(3700,3700)
         }
 
         function player_sprite(){
@@ -201,41 +201,38 @@
 
         }
 
-        
-
-
         function player_movement() {
             player_sprite_idle_direction_left.position(player_x,player_y)
             player_sprite_idle_direction_right.position(player_x,player_y)
             player_sprite_run_left.position(player_x,player_y)
             player_sprite_run_right.position(player_x,player_y)
 
-            if (keyIsDown(LEFT_ARROW)&& hit_left == false){
-                player_x -= 5
-                hitbox_playerX -=5
+            // if (keyIsDown(LEFT_ARROW)&& hit_left == false){
+            //     player_x -= 1
+            //     hitbox_playerX -=1
                 
 
-            }
+            // }
 
 
 
-            if (keyIsDown(RIGHT_ARROW)&& hit_right == false) {
-                player_x += 5
-                hitbox_playerX +=5
-            }
+            // if (keyIsDown(RIGHT_ARROW)&& hit_right == false) {
+            //     player_x += 1
+            //     hitbox_playerX +=1
+            // }
 
 
 
             if (keyIsDown(UP_ARROW)&& hit_up== false) {
-                player_y -= 5
-                hitbox_playerY -= 5
+                player_y -= 1
+                hitbox_playerY -= 1
             }
 
 
 
             if (keyIsDown(DOWN_ARROW)&& hit_down == false) {
-                player_y += 5
-                hitbox_playerY +=5
+                player_y += 1
+                hitbox_playerY +=1
             }
 
 
@@ -256,8 +253,7 @@
 
 
         }
-
-        
+      
         function border() {
 
 
@@ -278,38 +274,85 @@
 
         }
         
-
-
         function map_movement(){
-            map_sprite.resize(3700,3700)
+
+
+            
             image(map_sprite,Xmap_sprite,Ymap_sprite)
 
-            if (hit_right && keyIsDown(RIGHT_ARROW)) {
-                Xmap_sprite -= 5
+            
+
+            if (keyIsDown(RIGHT_ARROW)) {
+                Xmap_sprite -= 6
             }
-            if (hit_down && keyIsDown(DOWN_ARROW)) {
-                Ymap_sprite -= 5
+            if (keyIsDown(DOWN_ARROW)) {
+                Ymap_sprite -= 6
             }
+            if (keyIsDown(UP_ARROW)) {
+                Ymap_sprite += 6
+            }
+            if (keyIsDown(LEFT_ARROW)) {
+                Xmap_sprite += 6
+            }
+
+            
+
+
+
+        }
+
+        function first_dialog_hitbox() {
+            fill('red')// remove
+            rect(Xmap_sprite + 520 ,Ymap_sprite-50,50,1000)
+
+            FDHB = collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite + 520 ,Ymap_sprite-50,50,1000)
+            if ((FDHB) && (discoveredFDHB == false)) { 
+                // window.alert('test')
+                discoveredFDHB = true
+            }
+
+        }
+
+        function chest_ichi() {
+            rect(Xmap_sprite + 665 ,Ymap_sprite +130,150,80)
         }
 
 
+        function map_border() {
+            fill('blue')
+            rect(Xmap_sprite,Ymap_sprite-40,2000,100)//restrics top 
+            rect(Xmap_sprite,Ymap_sprite+660,1490,100)// restricts down
+            rect(Xmap_sprite-100,Ymap_sprite,100,700)// restricts left
+            rect(Xmap_sprite+1380,Ymap_sprite+660,100,390)//restrics left
+            rect(Xmap_sprite+1100,Ymap_sprite+950, 300, 100)//res up
+            rect(Xmap_sprite+1100,Ymap_sprite+1000,100,1800)//left
+            rect(Xmap_sprite+1100,Ymap_sprite+2700,800,100)//down
+            rect(Xmap_sprite+1800,Ymap_sprite+2700,150,700)
 
+        }
 
 
         function draw() {
-            background(100)
+            clear()
             noStroke()
-            border()
-            map_movement()
+
+            if (keyIsDown(192)) {
+                stroke('pink')
+            }
+
             
+            
+            map_movement()
             player_sprite()
             player_movement()
-            // image(gif, 0, 0, width, height);
-            console.log(hit_right)
+            border()
+            first_dialog_hitbox()
+            chest_ichi()
+            map_border()
+            console.log(discoveredFDHB)
             
-
-
-
+            
+            
 
 
         }
