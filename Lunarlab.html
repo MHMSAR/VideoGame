@@ -338,7 +338,7 @@
             rect(Xmap_sprite+2000,Ymap_sprite,100,1000)//right
 
             
-
+            //left
             if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite-100,Ymap_sprite,100,700) ){
                 hit_left = true
             }
@@ -355,20 +355,22 @@
               
             }
 
-            //left
-            if (collideRectRect()){
-                
+            //right
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+3400,Ymap_sprite+2700,400,800)){ // exit
+                hit_right = true
             }
-            if (collideRectRect()){
-                
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2460,Ymap_sprite+2630,20,140)){
+                hit_right = true
             }
-            if (collideRectRect()){
-                
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+3450,Ymap_sprite+1000,100,2000)){
+                hit_right = true
             }
-            if (collideRectRect()){
-                
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2000,Ymap_sprite,100,1000)){
+                hit_right = true
             }
 
+
+            //up
             
         }
 
@@ -390,7 +392,7 @@
             first_dialog_hitbox()
             chest_ichi()
             map_border()
-            console.log(hit_left)
+            console.log(hit_right)
             
             
             
