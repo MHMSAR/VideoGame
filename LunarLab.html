@@ -282,16 +282,16 @@
 
             
 
-            if (keyIsDown(RIGHT_ARROW)) {
+            if (keyIsDown(RIGHT_ARROW)&&(hit_right==false)) {
                 Xmap_sprite -= 6
             }
-            if (keyIsDown(DOWN_ARROW)) {
+            if (keyIsDown(DOWN_ARROW)&&(hit_down==false)) {
                 Ymap_sprite -= 6
             }
-            if (keyIsDown(UP_ARROW)) {
+            if (keyIsDown(UP_ARROW)&&(hit_up==false)) {
                 Ymap_sprite += 6
             }
-            if (keyIsDown(LEFT_ARROW)) {
+            if (keyIsDown(LEFT_ARROW)&&(hit_left==false)) {
                 Xmap_sprite += 6
             }
 
@@ -302,7 +302,7 @@
         }
 
         function first_dialog_hitbox() {
-            fill('red')// remove
+            // fill('red')// remove
             rect(Xmap_sprite + 520 ,Ymap_sprite-50,50,1000)
 
             FDHB = collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite + 520 ,Ymap_sprite-50,50,1000)
@@ -319,12 +319,12 @@
 
 
         function map_border() {
-            fill('blue')
-            rect(Xmap_sprite,Ymap_sprite-40,2000,100)// top 
+            // fill('blue')
+            rect(Xmap_sprite,Ymap_sprite-40,2000,100)// up 
             rect(Xmap_sprite,Ymap_sprite+660,1490,100)//  down
             rect(Xmap_sprite-100,Ymap_sprite,100,700)//  left /
             rect(Xmap_sprite+1380,Ymap_sprite+660,100,390)// left/
-            rect(Xmap_sprite+1100,Ymap_sprite+950, 300, 100)//res up
+            rect(Xmap_sprite+1100,Ymap_sprite+950, 300, 100)// up
             rect(Xmap_sprite+1100,Ymap_sprite+1000,100,1800)//left/
             rect(Xmap_sprite+1100,Ymap_sprite+2700,800,100)//down
             rect(Xmap_sprite+1800,Ymap_sprite+2700,150,700)//left/
@@ -371,6 +371,33 @@
 
 
             //up
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite,Ymap_sprite-40,2000,100)) {
+                hit_up = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1100,Ymap_sprite+950, 300, 100)) {
+                hit_up = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2460,Ymap_sprite+2700,1100,70)) {
+                hit_up = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2000,Ymap_sprite+950,1600,100)) {
+                hit_up = true
+            }
+
+
+            //down
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite,Ymap_sprite+660,1490,100)) {
+                hit_down = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1100,Ymap_sprite+2700,800,100)) {
+                hit_down = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1800,Ymap_sprite+3400, 1700,100)) {
+                hit_down = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2460,Ymap_sprite+2630,1100,70)) {
+                hit_down = true
+            }
             
         }
 
@@ -392,7 +419,7 @@
             first_dialog_hitbox()
             chest_ichi()
             map_border()
-            console.log(hit_right)
+            console.log(hit_right,hit_down,hit_left,hit_up)
             
             
             
