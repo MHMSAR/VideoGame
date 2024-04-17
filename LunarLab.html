@@ -64,7 +64,9 @@
         let FDHB = false
         let discoveredFDHB = false
 
-
+        let chestOne = false
+        let FirstChestDis = false
+        let HEAPC = false //high energy antimatter partical crowbar or heap-c
 
 
 
@@ -309,12 +311,20 @@
             if ((FDHB) && (discoveredFDHB == false)) { 
                 // window.alert('test')
                 discoveredFDHB = true
+                
             }
 
         }
 
         function chest_ichi() {
             rect(Xmap_sprite + 665 ,Ymap_sprite +130,150,80)
+            
+            chestOne = collideRectRect(hitbox_playerX,hitbox_playerY,144,144,Xmap_sprite + 665 ,Ymap_sprite +130,150,80)
+            if ((chestOne) && (FirstChestDis == false) && (keyIsDown(13))){
+                HEAPC = true
+                FirstChestDis = true
+                window.alert('You Have Found the HEAV-C!')
+            }
         }
 
 
