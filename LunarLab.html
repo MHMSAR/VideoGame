@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,6 +68,24 @@
         let chestOne = false
         let FirstChestDis = false
         let HEAPC = false //high energy antimatter partical crowbar or heap-c
+
+        let girl_dialog = false
+        let talked_girl_dialog = false
+
+        let tab_itracsin = false
+        let triggered_tab = false
+        let startTime;
+        let elapsedTime;
+        let timerStarted = false;
+        let timerStopped = false;
+        let COMMENCE = false
+
+        let johnstart = false
+        let john_ttyl = false
+
+        let hit_exit 
+
+
 
 
 
@@ -168,7 +187,6 @@
             
         }
         
-
         function sprites(){
             player_sprite_idle_direction_left = createImg('astrobob_left.gif')
             player_sprite_idle_direction_left.size(144,144)
@@ -194,9 +212,7 @@
             player_sprite_run_left.style('transform', 'translate(-50%, -50%)')
             player_sprite_run_left.hide()
         }
-
         
-
         function player_sprite(){
 
             
@@ -388,7 +404,7 @@
 
             FDHB = collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite + 520 ,Ymap_sprite-50,50,1000)
             if ((FDHB) && (discoveredFDHB == false)) { 
-                window.alert('PA_system: ALL ARRIVING PERSONEL, PLEASE RETRIVE YOUR HEAP-C FROM THE STORAGE UNIT.')
+                // window.alert('PA_system: ALL ARRIVING PERSONEL, PLEASE RETRIVE YOUR HEAP-C FROM THE STORAGE UNIT.') remove before flight
                 discoveredFDHB = true
                 
             }
@@ -402,20 +418,103 @@
             if ((chestOne) && (FirstChestDis == false) && (keyIsDown(13))){
                 HEAPC = true
                 FirstChestDis = true
-                window.alert('You Have Found the HEAV-C!')
+                // window.alert('You Have Found the HEAV-C!')remove before flight
             }
         }
 
         function girl_dialog_box(){
-            rect()
+            // fill('red')
+            rect(Xmap_sprite+1400,Ymap_sprite+1100,600,50)
+            girl_dialog = collideRectRect(hitbox_playerX,hitbox_playerY,144,144,Xmap_sprite+1400,Ymap_sprite+1100,600,50)
+            if ((girl_dialog)&&(talked_girl_dialog == false)){
+
+                player_sprite_idle_direction_left.show()
+                player_sprite_idle_direction_right.hide()
+                player_sprite_run_right.hide()
+                player_sprite_run_left.hide()
+
+                talked_girl_dialog = true
+
+                // window.alert('Hey, did you get the HEAPC?')remove before flight
+                if (HEAPC == false) {
+                    // window.alert("Here just have my spare. I'm the one who has to supply that storage unit with it anyways...")remove before flight
+                }
+                // window.alert("I really don't know why they call it that; it's basically a glorified space crowbar. Also, name's Theta")remove before flight
+                // window.alert("Anyways, get started on the Atom Smashing in the Partical Accelerator just down from here.")remove before flight
+                // window.alert("Use the TABLET to start it.")
+                // window.alert("After you're done, tell John over there that your done. I think he's to the right and probably slaving away on his computer.")remove before flight
+
+            }
+        }   
+
+
+        function TABLET() {
+            tab_itracsin = collideRectRect(Xmap_sprite+1200,Ymap_sprite+1670,150,400,hitbox_playerX,hitbox_playerY,144,144)
+            if ((tab_itracsin)&&(!triggered_tab)) {
+                // fire partiucle acc
+                if ((!COMMENCE)&&(keyIsDown(13))) {
+                    
+                    window.alert("COMMENCE THE OPERATION??? press (ok)")
+                    
+                    COMMENCE = true
+                }
+                
+            
+            }
+            if (!timerStarted && !timerStopped&& (COMMENCE)) {
+                    startTime = millis() // Start the timer
+                    timerStarted = true
+                }
+                    
+                if (!timerStopped && (COMMENCE) ) {
+                    // Calculate elapsed time
+                    elapsedTime = (millis() - startTime)/1000
+
+                    if ((elapsedTime<5)&&(COMMENCE)){
+                   //shaky map
+                    
+                    
+                    Xmap_sprite += 12
+                    }
+                    if ((elapsedTime>5)&&(COMMENCE)) {
+                        Xmap_sprite -= 12
+
+                        //play audio here
+
+                        
+                        if (elapsedTime>10){
+                            COMMENCE = false
+                        }
+                    }
+                    
+                }
+        }
+        
+        function John() {
+            // fill('red')
+            rect(Xmap_sprite+2530,Ymap_sprite+1200,100,300)
+            johnstart = collideRectRect(hitbox_playerX,hitbox_playerY,144,144,Xmap_sprite+2530,Ymap_sprite+1200,100,300)
+            if ((johnstart)&&(!john_ttyl)) {
+                
+                // text here
+
+                john_ttyl = true
+            }
         }
 
+        function exit() {
+            hit_exit = collideRectRect(hitbox_playerX,hitbox_playerY,144,144,Xmap_sprite+3400,Ymap_sprite+2700,400,800)
+            if (hit_exit&&(elapsedTime>10)){
+                window.location.href = 'AINO.html'
+                noLoop()
+            }
+        } 
 
         function preload() {
             map_sprite = loadImage('lunarlab.png')
             sprites()
             
-
+ 
             
            
         }
@@ -429,12 +528,14 @@
             
             map_sprite.resize(3700,3700)
 
-            window.alert('Please use the arrow keys for movement, enter for interaction')
+            window.alert('Please use the ARROW keys for movement & ENTER key for interaction with objects.')
+            time_shake = millis()
         }
 
 
 
         function draw() {
+            
             clear()
             noStroke()
 
@@ -451,7 +552,11 @@
             first_dialog_hitbox()
             chest_ichi()
             map_border()
-            console.log(hit_right,hit_down,hit_left,hit_up)
+            girl_dialog_box()
+            TABLET()
+            John()
+            exit()
+            console.log()
             
             
             
