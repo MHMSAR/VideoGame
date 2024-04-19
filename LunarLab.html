@@ -70,7 +70,103 @@
 
 
 
+        function map_border() {
+            // fill('blue')
+            rect(Xmap_sprite,Ymap_sprite-40,2000,100)// up 
+            rect(Xmap_sprite,Ymap_sprite+660,1490,100)//  down
+            rect(Xmap_sprite-100,Ymap_sprite,100,700)//  left /
+            rect(Xmap_sprite+1380,Ymap_sprite+660,100,390)// left/
+            rect(Xmap_sprite+1100,Ymap_sprite+950, 300, 100)// up
+            rect(Xmap_sprite+1100,Ymap_sprite+1000,150,1800)//left/
+            rect(Xmap_sprite+1100,Ymap_sprite+2700,800,100)//down
+            rect(Xmap_sprite+1800,Ymap_sprite+2700,150,700)//left/
+            rect(Xmap_sprite+1800,Ymap_sprite+3400, 1700,100)//down
+            rect(Xmap_sprite+3400,Ymap_sprite+2700,400,800)//right and the exit
+            rect(Xmap_sprite+2460,Ymap_sprite+2700,1100,70)//up 
+            rect(Xmap_sprite+2460,Ymap_sprite+2630,20,140)//right
+            rect(Xmap_sprite+2460,Ymap_sprite+2630,1100,70)//down
+            rect(Xmap_sprite+2550,Ymap_sprite+600,100,2000)//right
+            rect(Xmap_sprite+2000,Ymap_sprite+950,1600,100)//up
+            rect(Xmap_sprite+2000,Ymap_sprite,100,1000)//right
 
+            //desk borders
+            rect(Xmap_sprite+1200,Ymap_sprite+1670,150,100)//down
+            rect(Xmap_sprite+1200,Ymap_sprite+1670,150,400)// left and interact
+            rect(Xmap_sprite+1200,Ymap_sprite+2000,150,100)//up
+            //left
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite-100,Ymap_sprite,100,700) ){
+                hit_left = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1380,Ymap_sprite+660,100,390)){
+                hit_left = true
+                
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1100,Ymap_sprite+1000,150,1800)){
+                hit_left = true
+               
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1800,Ymap_sprite+2700,150,700)){
+                hit_left = true
+              
+            }
+
+            //desk  
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1150,Ymap_sprite+1670,150,50)){
+                hit_down = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1200,Ymap_sprite+1670,150,400)){
+                hit_left = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1150,Ymap_sprite+2000,150,50)){
+                hit_up = true
+            }
+            
+
+            //right
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+3400,Ymap_sprite+2700,400,800)){ // exit
+                hit_right = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2460,Ymap_sprite+2630,20,140)){
+                hit_right = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2550,Ymap_sprite+600,100,2000)){
+                hit_right = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2000,Ymap_sprite,100,1000)){
+                hit_right = true
+            }
+
+
+            //up
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite,Ymap_sprite-40,2000,100)) {
+                hit_up = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1100,Ymap_sprite+950, 300, 100)) {
+                hit_up = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2460,Ymap_sprite+2700,1100,70)) {
+                hit_up = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2000,Ymap_sprite+950,1600,100)) {
+                hit_up = true
+            }
+
+
+            //down
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite,Ymap_sprite+660,1490,100)) {
+                hit_down = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1100,Ymap_sprite+2700,800,100)) {
+                hit_down = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1800,Ymap_sprite+3400, 1700,100)) {
+                hit_down = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2460,Ymap_sprite+2630,1100,70)) {
+                hit_down = true
+            }
+            
+        }
         
 
         function sprites(){
@@ -99,24 +195,7 @@
             player_sprite_run_left.hide()
         }
 
-        function preload() {
-            map_sprite = loadImage('lunarlab.png')
-            sprites()
-            
-
-            
-           
-        }
-
-        function setup() {
-            canvas = createCanvas(window_h,window_h)
-            
-            // let canvasX = (windowWidth - width) / 2
-            // let canvasY = (windowHeight - height) / 2
-            // canvas.position(canvasX, canvasY);
-            
-            map_sprite.resize(3700,3700)
-        }
+        
 
         function player_sprite(){
 
@@ -309,7 +388,7 @@
 
             FDHB = collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite + 520 ,Ymap_sprite-50,50,1000)
             if ((FDHB) && (discoveredFDHB == false)) { 
-                // window.alert('test')
+                window.alert('PA_system: ALL ARRIVING PERSONEL, PLEASE RETRIVE YOUR HEAP-C FROM THE STORAGE UNIT.')
                 discoveredFDHB = true
                 
             }
@@ -327,89 +406,32 @@
             }
         }
 
-
-        function map_border() {
-            // fill('blue')
-            rect(Xmap_sprite,Ymap_sprite-40,2000,100)// up 
-            rect(Xmap_sprite,Ymap_sprite+660,1490,100)//  down
-            rect(Xmap_sprite-100,Ymap_sprite,100,700)//  left /
-            rect(Xmap_sprite+1380,Ymap_sprite+660,100,390)// left/
-            rect(Xmap_sprite+1100,Ymap_sprite+950, 300, 100)// up
-            rect(Xmap_sprite+1100,Ymap_sprite+1000,100,1800)//left/
-            rect(Xmap_sprite+1100,Ymap_sprite+2700,800,100)//down
-            rect(Xmap_sprite+1800,Ymap_sprite+2700,150,700)//left/
-            rect(Xmap_sprite+1800,Ymap_sprite+3400, 1700,100)//down
-            rect(Xmap_sprite+3400,Ymap_sprite+2700,400,800)//right and the exit
-            rect(Xmap_sprite+2460,Ymap_sprite+2700,1100,70)//up 
-            rect(Xmap_sprite+2460,Ymap_sprite+2630,20,140)//right
-            rect(Xmap_sprite+2460,Ymap_sprite+2630,1100,70)//down
-            rect(Xmap_sprite+3450,Ymap_sprite+1000,100,2000)//right
-            rect(Xmap_sprite+2000,Ymap_sprite+950,1600,100)//up
-            rect(Xmap_sprite+2000,Ymap_sprite,100,1000)//right
-
-            
-            //left
-            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite-100,Ymap_sprite,100,700) ){
-                hit_left = true
-            }
-            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1380,Ymap_sprite+660,100,390)){
-                hit_left = true
-                
-            }
-            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1100,Ymap_sprite+1000,100,1800)){
-                hit_left = true
-               
-            }
-            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1800,Ymap_sprite+2700,150,700)){
-                hit_left = true
-              
-            }
-
-            //right
-            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+3400,Ymap_sprite+2700,400,800)){ // exit
-                hit_right = true
-            }
-            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2460,Ymap_sprite+2630,20,140)){
-                hit_right = true
-            }
-            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+3450,Ymap_sprite+1000,100,2000)){
-                hit_right = true
-            }
-            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2000,Ymap_sprite,100,1000)){
-                hit_right = true
-            }
-
-
-            //up
-            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite,Ymap_sprite-40,2000,100)) {
-                hit_up = true
-            }
-            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1100,Ymap_sprite+950, 300, 100)) {
-                hit_up = true
-            }
-            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2460,Ymap_sprite+2700,1100,70)) {
-                hit_up = true
-            }
-            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2000,Ymap_sprite+950,1600,100)) {
-                hit_up = true
-            }
-
-
-            //down
-            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite,Ymap_sprite+660,1490,100)) {
-                hit_down = true
-            }
-            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1100,Ymap_sprite+2700,800,100)) {
-                hit_down = true
-            }
-            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1800,Ymap_sprite+3400, 1700,100)) {
-                hit_down = true
-            }
-            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2460,Ymap_sprite+2630,1100,70)) {
-                hit_down = true
-            }
-            
+        function girl_dialog_box(){
+            rect()
         }
+
+
+        function preload() {
+            map_sprite = loadImage('lunarlab.png')
+            sprites()
+            
+
+            
+           
+        }
+
+        function setup() {
+            canvas = createCanvas(window_h,window_h)
+            
+            // let canvasX = (windowWidth - width) / 2
+            // let canvasY = (windowHeight - height) / 2
+            // canvas.position(canvasX, canvasY);
+            
+            map_sprite.resize(3700,3700)
+
+            window.alert('Please use the arrow keys for movement, enter for interaction')
+        }
+
 
 
         function draw() {
