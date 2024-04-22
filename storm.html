@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="p5.js" ></script>
+    <!-- <script defer src="https://unpkg.com/p5"></script> -->
+    <!-- Includes the p5.collide2D addon library -->
+    
+    <title>CamSAT</title>
+    <style>
+        html, body{
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        let video
+        let videoPlayed
+
+        let timerStarted = false
+        let timerStopped = false
+        let elapsedTime
+
+        function videofunc(){
+            video = createVideo('SolStorm.mp4')
+            video.size(1280,720)
+            video.play()
+            video.position(0,0)
+            if (elapsedTime > 11){
+                window.close()
+            }
+            
+            
+
+        }
+        function time(){
+            if (!timerStarted) {
+                startTime = millis(); // Start the timer
+                timerStarted = true;
+            }
+            elapsedTime = (millis()-startTime)/1000
+
+            
+        }
+        function setup() {
+            videofunc()
+        }
+        function draw() {
+            time()
+            if (elapsedTime > 11){
+                window.close()
+            }
+            console.log(elapsedTime)
+        }
+    </script>
+</body>
+</html>
