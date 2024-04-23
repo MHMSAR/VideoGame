@@ -4,10 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="p5.js" ></script>
-    <!-- <script defer src="https://unpkg.com/p5"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js" integrity="sha512-uaz5GpnQoE6t5echKlX8P52czvsIGgLPcvlzfvRubLZ1Hp8JemUDnbUiAahbVtPb+jUVrNETuXvAhDDF/N3M4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Includes the p5.collide2D addon library -->
-    <script defer src="p5.collide2d.js"></script>
+    <script defer src="https://unpkg.com/p5.collide2d"></script>
     <script src="p5.sound.js"></script>
     <link href="https://fonts.cdnfonts.com/css/anurati" rel="stylesheet">
     
@@ -252,13 +251,9 @@
 
                 if (eav_Y < -1000){ //lunar lab value set to true
                     console.log('sending entity...')
-                    // window.location.href = 'LunarLab.html'
-                    window.open('LunarLab.html','','width=' + 1522 + ', height=' + 1064)
+                    window.location.href = 'LunarLab.html'
 
                     localStorage.setItem('lunar_lab_quicksave','true')
-
-
-                    noLoop()
                     // store change other values to false
                 }
             }
