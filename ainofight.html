@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="p5.js" ></script>
+    <!-- <script defer src="https://unpkg.com/p5"></script> -->
+    <!-- Includes the p5.collide2D addon library -->
+    <script defer src="p5.collide2d.js"></script>
+    <script src="p5.sound.js"></script>
+    <title>test</title>
+    <style>
+        html, body{
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            background-color: darkgray;
+        }
+        
+        
+
+
+    </style>
+</head>
+<body>
+    <script>
+        let window_w = (window.innerWidth)
+        let window_h = (window.innerHeight)
+        let canvas
+
+        let player_sprite_idle_direction_right
+        let player_sprite_idle_direction_left
+        let sprite_direction = false //left is true and vice versa
+
+        let player_sprite_run_right
+        let player_sprite_run_left
+
+        let player_x = (window_w/2)
+        let player_y = (window_h/2)
+
+        let hit_left = false
+        let hit_right = false
+        let hit_up = false
+        let hit_down = false
+
+
+        let hitbox_playerX = (window_h/2)-27
+        let hitbox_playerY = (window_h/2)-34
+
+        let map_sprite
+        let Xmap_sprite 
+        let Ymap_sprite  // position of start of map
+
+        let timeint
+        let timer1 
+
+        let timerStarted = false
+        let timerStopped = false
+        let elapsedTime
+
+        let video
+        let videoPlayed
+
+        let PAAlertOne = false
+        let ATKOne = false
+
+        let confirmDio1 
+        let confirmDio2 
+
+        let img_forklift 
+
+        let forkliftone
+        let forklftOne_sound
+        let Xone_forklift = (window_h/2)-100
+        let Yone_forklift = -100
+        let flsound_one_played = false
+
+        function videofunc(){
+            // video = createVideo('SolStorm.mp4')
+            // video.size(1060,596.25)
+            // video.play()
+            // if (elapsedTime > 11){
+            //     video.hide()
+            // }
+            window.open('storm.html','','width=' + 1280 + ', height=' + 720)
+            
+        }
+
+        function time(){
+            if (!timerStarted &&confirmDio2) {
+                startTime = millis(); // Start the timer
+                timerStarted = true;
+            }
+            elapsedTime = (millis()-startTime)/1000
+
+            
+
+        }
+
+        function border() {
+
+
+                    
+        // fill(0,0,0,0)
+        fill('black')
+        rect(0,window_h-4,window_h,4)// bottom
+        rect(-60,0,64,window_h)// left
+        rect(window_h-4,0,64,window_h) // rihgt
+        rect(0,-60,window_h,64) // up
+
+        hit_left = collideRectRect(hitbox_playerX, hitbox_playerY, 75, 100, -60, 0, 64, window_h)// first four is sprite, vice versa
+        hit_right = collideRectRect(hitbox_playerX, hitbox_playerY, 75, 100, window_h-4,0,64,window_h)
+        hit_down = collideRectRect(hitbox_playerX, hitbox_playerY, 75, 100, 0,window_h-4,window_h,0)
+        hit_up = collideRectRect(hitbox_playerX, hitbox_playerY, 75, 100,0,-60,window_h,64)
+
+
+
+
+        }
+
+        function sprites(){
+            player_sprite_idle_direction_left = createImg('astrobob_left.gif')
+            player_sprite_idle_direction_left.size(100,100)
+            player_sprite_idle_direction_left.style('position','absolute')
+            player_sprite_idle_direction_left.style('transform', 'translate(-50%, -50%)')
+            player_sprite_idle_direction_left.hide()
+
+            player_sprite_idle_direction_right = createImg('astrobob_right.gif')
+            player_sprite_idle_direction_right.size(100,100)
+            player_sprite_idle_direction_right.style('position','absolute')
+            player_sprite_idle_direction_right.style('transform', 'translate(-50%, -50%)')
+            player_sprite_idle_direction_right.hide()
+
+            player_sprite_run_right = createImg('astrobob_walk_right.gif')
+            player_sprite_run_right.size(100,100)
+            player_sprite_run_right.style('position','absolute')
+            player_sprite_run_right.style('transform', 'translate(-50%, -50%)')
+            player_sprite_run_right.hide()
+
+            player_sprite_run_left = createImg('astrobob_walk_left.gif')
+            player_sprite_run_left.size(100,100)
+            player_sprite_run_left.style('position','absolute')
+            player_sprite_run_left.style('transform', 'translate(-50%, -50%)')
+            player_sprite_run_left.hide()
+        }
+
+        function player_sprite(){            
+
+            fill(0,0,0,0)
+            rect(hitbox_playerX,hitbox_playerY,75,100)//player hitbox
+
+            if (keyIsDown(LEFT_ARROW)){
+                sprite_direction = true
+                player_sprite_run_right.hide()
+                player_sprite_idle_direction_left.hide()
+                player_sprite_idle_direction_right.hide()
+                player_sprite_run_left.show()
+
+            }
+
+            if (keyIsDown(RIGHT_ARROW)) {
+                sprite_direction = false
+                player_sprite_run_right.show()
+                player_sprite_idle_direction_left.hide()
+                player_sprite_idle_direction_right.hide()
+                player_sprite_run_left.hide()
+            }
+
+
+            if (keyIsDown(UP_ARROW)) {
+                if (sprite_direction){
+                    player_sprite_run_right.hide()
+                    player_sprite_idle_direction_left.hide()
+                    player_sprite_idle_direction_right.hide()
+                    player_sprite_run_left.show()
+                }
+                else {
+                    player_sprite_run_right.show()
+                    player_sprite_idle_direction_left.hide()
+                    player_sprite_idle_direction_right.hide()
+                    player_sprite_run_left.hide()
+                }
+            }
+
+
+            if (keyIsDown(DOWN_ARROW)) {
+                if (sprite_direction){
+                    player_sprite_run_right.hide()
+                    player_sprite_idle_direction_left.hide()
+                    player_sprite_idle_direction_right.hide()
+                    player_sprite_run_left.show()
+                }
+                else {
+                    player_sprite_run_right.show()
+                    player_sprite_idle_direction_left.hide()
+                    player_sprite_idle_direction_right.hide()
+                    player_sprite_run_left.hide()
+                }
+            }
+
+
+            if (sprite_direction == true &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false )  &&(keyIsDown(UP_ARROW) == false ) &&(keyIsDown(DOWN_ARROW) == false )){
+                // idle ani
+                //  overides the walking animation with idle
+
+                player_sprite_idle_direction_left.show()
+                player_sprite_idle_direction_right.hide()
+                player_sprite_run_right.hide()
+                player_sprite_run_left.hide()
+            }
+            if (sprite_direction == false &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false )  &&(keyIsDown(UP_ARROW) == false ) &&(keyIsDown(DOWN_ARROW) == false )){
+                // idle ani
+                //  overides the walking animation with idle
+
+                player_sprite_idle_direction_left.hide()
+                player_sprite_idle_direction_right.show()
+                player_sprite_run_right.hide()
+                player_sprite_run_left.hide()
+            }
+
+
+        }
+
+        function player_movement() {
+            player_sprite_idle_direction_left.position(player_x,player_y)
+            player_sprite_idle_direction_right.position(player_x,player_y)
+            player_sprite_run_left.position(player_x,player_y)
+            player_sprite_run_right.position(player_x,player_y)
+
+            if (keyIsDown(LEFT_ARROW)&& hit_left == false){
+                player_x -= 10
+                hitbox_playerX -=10
+                
+
+            }
+
+
+
+            if (keyIsDown(RIGHT_ARROW)&& hit_right == false) {
+                player_x += 10
+                hitbox_playerX +=10
+            }
+
+
+
+            if (keyIsDown(UP_ARROW)&& hit_up== false) {
+                player_y -= 10
+                hitbox_playerY -= 10
+            }
+
+
+
+            if (keyIsDown(DOWN_ARROW)&& hit_down == false) {
+                player_y += 10
+                hitbox_playerY +=10
+            }
+
+
+            
+            if (sprite_direction == true &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false )  &&(keyIsDown(UP_ARROW) == false ) &&(keyIsDown(DOWN_ARROW) == false )){
+                //  overides the walking animation with idle
+                
+            }
+            if (sprite_direction == false &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false )  &&(keyIsDown(UP_ARROW) == false ) &&(keyIsDown(DOWN_ARROW) == false )){ 
+                //  overides the walking animation with idle
+
+            }
+            
+
+
+
+
+
+
+        }
+
+        function phaseOne(){
+            
+            // if (elapsedTime > 18 && (!PAAlertOne)) {
+            //     confirmDio1 = window.confirm("You: I thought this was the cargo bay...")
+            //     confirmDio2= window.confirm("PA SYSTEM: ALL OF OUR MACHINE HAS GONE HAYWIRE, PLEASE BE ON ALERT AND AVOID THE MACHINERY AND THEIR LASER GUIDENCE SYSTEM.")
+            //     PAAlertOne = true
+            // }
+
+            
+            if ((elapsedTime>1)&&(!ATKOne)&&(confirmDio2)) { // should be 25 seconds for the start
+                
+
+                if ((elapsedTime>1.2)&&(!ATKOne)&&(confirmDio2)) {
+                    stroke('red')
+                    rect(window_h/2-100,0,200,window_h)//first atk laser line
+                    
+
+                    if ((elapsedTime>2)&&(!ATKOne)&&(confirmDio2)) {
+
+
+                        //hitbox
+                        // fill('red')
+                        rect(Xone_forklift,Yone_forklift,200,200)
+                        
+                        image(img_forklift,Xone_forklift,Yone_forklift,200,200)
+
+                        Yone_forklift += 15
+                        
+                        if (!flsound_one_played) {
+                            forklftOne_sound.play()
+                            flsound_one_played = true
+                        }
+
+                        if (elapsedTime > 4) {
+                            ATKOne = true
+                        }
+                        
+
+                    }
+
+                }
+                
+            
+            }
+            
+        }
+
+        function preload(){
+            sprites()
+            forklftOne_sound = loadSound('forkliftFX.mp3')
+            img_forklift = loadImage('forklift.png')
+            
+        }
+
+        function setup(){
+            canvas = createCanvas(window_h,window_h)
+            confirmDio2= window.confirm("PA SYSTEM: ALL OF OUR MACHINE HAS GONE HAYWIRE, PLEASE BE ON ALERT AND AVOID THE MACHINERY AND THEIR LASER GUIDENCE SYSTEM.")
+            timeint = (millis())//div 1000 = seconds instead of milli
+            // videoPlayed = image(video,0,0,1060,596.25)
+            // videofunc()
+        }
+
+        function draw() {
+            
+            clear()
+            noStroke()
+            if (keyIsDown(192)) {
+                stroke('pink')
+            }
+            border()
+            player_sprite()
+            player_movement()
+            time()
+            phaseOne()
+            
+            // background('black')
+            console.log(elapsedTime)
+        }
+
+
+    </script>
+</body>
+</html>
