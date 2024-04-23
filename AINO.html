@@ -18,10 +18,10 @@
             align-items: center;
             height: 100vh;
             overflow: hidden;
-            /* background-color: black; */
+            background-color: darkgray;
         }
         
-
+        
 
 
     </style>
@@ -65,6 +65,9 @@
         let video
         let videoPlayed
 
+        let PAAlertOne
+        let ATKOne
+
         function videofunc(){
             // video = createVideo('SolStorm.mp4')
             // video.size(1060,596.25)
@@ -83,9 +86,7 @@
             }
             elapsedTime = (millis()-startTime)/1000
 
-            if (elapsedTime == 2 ){
-                window.alert("You: I thought this was the cargo bay...")
-            }
+            
 
         }
 
@@ -100,10 +101,10 @@
         rect(window_h-4,0,64,window_h) // rihgt
         rect(0,-60,window_h,64) // up
 
-        hit_left = collideRectRect(hitbox_playerX, hitbox_playerY, 54, 72, -60, 0, 64, window_h)// first four is sprite, vice versa
-        hit_right = collideRectRect(hitbox_playerX, hitbox_playerY, 54, 72, window_h-4,0,64,window_h)
-        hit_down = collideRectRect(hitbox_playerX, hitbox_playerY, 54, 72, 0,window_h-4,window_h,0)
-        hit_up = collideRectRect(hitbox_playerX, hitbox_playerY, 54, 72,0,-60,window_h,64)
+        hit_left = collideRectRect(hitbox_playerX, hitbox_playerY, 75, 100, -60, 0, 64, window_h)// first four is sprite, vice versa
+        hit_right = collideRectRect(hitbox_playerX, hitbox_playerY, 75, 100, window_h-4,0,64,window_h)
+        hit_down = collideRectRect(hitbox_playerX, hitbox_playerY, 75, 100, 0,window_h-4,window_h,0)
+        hit_up = collideRectRect(hitbox_playerX, hitbox_playerY, 75, 100,0,-60,window_h,64)
 
 
 
@@ -112,25 +113,25 @@
 
         function sprites(){
             player_sprite_idle_direction_left = createImg('astrobob_left.gif')
-            player_sprite_idle_direction_left.size(72,72)
+            player_sprite_idle_direction_left.size(100,100)
             player_sprite_idle_direction_left.style('position','absolute')
             player_sprite_idle_direction_left.style('transform', 'translate(-50%, -50%)')
             player_sprite_idle_direction_left.hide()
 
             player_sprite_idle_direction_right = createImg('astrobob_right.gif')
-            player_sprite_idle_direction_right.size(72,72)
+            player_sprite_idle_direction_right.size(100,100)
             player_sprite_idle_direction_right.style('position','absolute')
             player_sprite_idle_direction_right.style('transform', 'translate(-50%, -50%)')
             player_sprite_idle_direction_right.hide()
 
             player_sprite_run_right = createImg('astrobob_walk_right.gif')
-            player_sprite_run_right.size(72,72)
+            player_sprite_run_right.size(100,100)
             player_sprite_run_right.style('position','absolute')
             player_sprite_run_right.style('transform', 'translate(-50%, -50%)')
             player_sprite_run_right.hide()
 
             player_sprite_run_left = createImg('astrobob_walk_left.gif')
-            player_sprite_run_left.size(72,72)
+            player_sprite_run_left.size(100,100)
             player_sprite_run_left.style('position','absolute')
             player_sprite_run_left.style('transform', 'translate(-50%, -50%)')
             player_sprite_run_left.hide()
@@ -139,7 +140,7 @@
         function player_sprite(){            
 
             fill(0,0,0,0)
-            rect(hitbox_playerX,hitbox_playerY,54,72)//player hitbox
+            rect(hitbox_playerX,hitbox_playerY,75,100)//player hitbox
 
             if (keyIsDown(LEFT_ARROW)){
                 sprite_direction = true
@@ -266,20 +267,34 @@
 
         }
 
-        
+        function phaseOne(){
+            if (elapsedTime > 11 && (!PAAlertOne)) {
+                window.alert("PA SYSTEM: ALL OF OUR MACHINE HAS GONE HAYWIRE, PLEASE BE ON ALERT AND AVOID THE MACHINERY AND THEIR LASER GUIDENCE SYSTEM.")
+                PAAlertOne = true
+            }
+            if ((elapsedTime>14)&&(!ATKOne)) {
+                fill('red')
+                rect()//first atk laser line
+            
+            }
+            
+        }
 
         function preload(){
             sprites()
-            videofunc()
+            
         }
 
         function setup(){
             canvas = createCanvas(window_h,window_h)
+            window.alert("You: I thought this was the cargo bay...")
             timeint = (millis())//div 1000 = seconds instead of milli
             // videoPlayed = image(video,0,0,1060,596.25)
+            videofunc()
         }
 
         function draw() {
+            
             clear()
             noStroke()
             if (keyIsDown(192)) {
@@ -289,6 +304,7 @@
             player_sprite()
             player_movement()
             time()
+            phaseOne()
             
             // background('black')
             console.log(elapsedTime)
