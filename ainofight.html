@@ -32,12 +32,19 @@
         let window_h = (window.innerHeight)
         let canvas
 
+        let health = 100
+        let death = false
+        let playerhitted = false
+
         let player_sprite_idle_direction_right
         let player_sprite_idle_direction_left
         let sprite_direction = false //left is true and vice versa
 
         let player_sprite_run_right
         let player_sprite_run_left
+        let player_death_sprite
+        let hit_sound
+        let playerIsDead
 
         let player_x = (window_w/2)
         let player_y = (window_h/2)
@@ -73,11 +80,25 @@
 
         let img_forklift 
 
+
         let forkliftone
         let forklftOne_sound
         let Xone_forklift = (window_h/2)-100
         let Yone_forklift = -100
         let flsound_one_played = false
+
+        let forklifttwo
+        let forklfttwo_sound
+        let Xtwo_forklift = (window_h/2)-100
+        let Ytwo_forklift = -100
+        let flsound_two_played = false
+
+        let forkliftthree
+        let forklftthree_sound
+        let Xthree_forklift = (window_h/2)-100
+        let Ythree_forklift = -100
+        let flsound_three_played = false
+
 
         function videofunc(){
             // video = createVideo('SolStorm.mp4')
@@ -97,7 +118,10 @@
             }
             elapsedTime = (millis()-startTime)/1000
 
-            
+            if (!confirmDio2) {
+                location.reload()
+                noLoop()
+            }
 
         }
 
@@ -146,6 +170,14 @@
             player_sprite_run_left.style('position','absolute')
             player_sprite_run_left.style('transform', 'translate(-50%, -50%)')
             player_sprite_run_left.hide()
+
+            
+
+            player_death_sprite = createImg('death.gif')
+            player_death_sprite.size(100,100)
+            player_death_sprite.style('position','absolute')
+            player_death_sprite.style('transform', 'translate(-50%, -50%)')
+            player_death_sprite.hide()
         }
 
         function player_sprite(){            
@@ -159,6 +191,8 @@
                 player_sprite_idle_direction_left.hide()
                 player_sprite_idle_direction_right.hide()
                 player_sprite_run_left.show()
+                
+                player_death_sprite.hide()  
 
             }
 
@@ -168,6 +202,7 @@
                 player_sprite_idle_direction_left.hide()
                 player_sprite_idle_direction_right.hide()
                 player_sprite_run_left.hide()
+                player_death_sprite.hide()  
             }
 
 
@@ -177,12 +212,14 @@
                     player_sprite_idle_direction_left.hide()
                     player_sprite_idle_direction_right.hide()
                     player_sprite_run_left.show()
+                    player_death_sprite.hide()  
                 }
                 else {
                     player_sprite_run_right.show()
                     player_sprite_idle_direction_left.hide()
                     player_sprite_idle_direction_right.hide()
                     player_sprite_run_left.hide()
+                    player_death_sprite.hide()  
                 }
             }
 
@@ -193,12 +230,15 @@
                     player_sprite_idle_direction_left.hide()
                     player_sprite_idle_direction_right.hide()
                     player_sprite_run_left.show()
+                    player_death_sprite.hide()  
                 }
                 else {
                     player_sprite_run_right.show()
                     player_sprite_idle_direction_left.hide()
                     player_sprite_idle_direction_right.hide()
                     player_sprite_run_left.hide()
+                    
+                    player_death_sprite.hide()  
                 }
             }
 
@@ -211,6 +251,7 @@
                 player_sprite_idle_direction_right.hide()
                 player_sprite_run_right.hide()
                 player_sprite_run_left.hide()
+                player_death_sprite.hide()  
             }
             if (sprite_direction == false &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false )  &&(keyIsDown(UP_ARROW) == false ) &&(keyIsDown(DOWN_ARROW) == false )){
                 // idle ani
@@ -220,16 +261,32 @@
                 player_sprite_idle_direction_right.show()
                 player_sprite_run_right.hide()
                 player_sprite_run_left.hide()
+                player_death_sprite.hide()  
             }
-
+            if (playerIsDead){// ends page 
+                player_death_sprite.show() 
+                window.alert('YOU ARE DEAD')
+                location.reload()
+                player_sprite_idle_direction_left.hide()
+                player_sprite_idle_direction_right.hide()
+                player_sprite_run_right.hide()
+                player_sprite_run_left.hide()
+                
+                noLoop()
+                
+            }
 
         }
 
+
         function player_movement() {
+
+
             player_sprite_idle_direction_left.position(player_x,player_y)
             player_sprite_idle_direction_right.position(player_x,player_y)
             player_sprite_run_left.position(player_x,player_y)
             player_sprite_run_right.position(player_x,player_y)
+            player_death_sprite.position(player_x,player_y)
 
             if (keyIsDown(LEFT_ARROW)&& hit_left == false){
                 player_x -= 10
@@ -278,6 +335,19 @@
 
         }
 
+        function player_dmg() {
+            if (collideRectRect(hitbox_playerX, hitbox_playerY,75,100,Xone_forklift,Yone_forklift,200,200)) {// frklift one
+                playerhitted = true
+                health -=10
+                
+            }
+
+            if (health < 1) {
+                playerIsDead = true
+                
+            }
+        }
+
         function phaseOne(){
             
             // if (elapsedTime > 18 && (!PAAlertOne)) {
@@ -300,9 +370,10 @@
 
                         //hitbox
                         // fill('red')
-                        rect(Xone_forklift,Yone_forklift,200,200)
+                        rect(Xone_forklift,Yone_forklift,200,200)// forklift hitbox
                         
-                        image(img_forklift,Xone_forklift,Yone_forklift,200,200)
+                        forkliftone = image(img_forklift,Xone_forklift,Yone_forklift,200,200)
+                        
 
                         Yone_forklift += 15
                         
@@ -335,9 +406,9 @@
         function setup(){
             canvas = createCanvas(window_h,window_h)
             confirmDio2= window.confirm("PA SYSTEM: ALL OF OUR MACHINE HAS GONE HAYWIRE, PLEASE BE ON ALERT AND AVOID THE MACHINERY AND THEIR LASER GUIDENCE SYSTEM.")
-            timeint = (millis())//div 1000 = seconds instead of milli
-            // videoPlayed = image(video,0,0,1060,596.25)
-            // videofunc()
+            timeint = (millis())
+            //remeber dio 2 is 18seconds after
+
         }
 
         function draw() {
@@ -352,9 +423,10 @@
             player_movement()
             time()
             phaseOne()
+            player_dmg()
             
             // background('black')
-            console.log(elapsedTime)
+            console.log(health)
         }
 
 
