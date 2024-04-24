@@ -29,17 +29,16 @@
         let timerStarted = false
         let timerStopped = false
         let elapsedTime
-        
-        let played = false
 
         function videofunc(){
             video = createVideo('SolStorm.mp4')
             video.size(1280,720)
-            
-            video.showControls()
+            video.play()
+            video.showControls();
             video.position(0,0)
-            
-            
+            if (elapsedTime > 20){
+                window.close()
+            }
             
             
 
@@ -57,18 +56,11 @@
             videofunc()
         }
         function draw() {
-            if (elapsedTime > 2 && (!played)){
-                video.play()
-                if (elapsedTime > 6) {
-                    played = false
-                }
-            }
-            
             time()
-            if (elapsedTime > 15){
+            if (elapsedTime > 11){
                 window.close()
             }
-            console.log((elapsedTime > 3 && (!played)))
+            console.log(elapsedTime)
         }
     </script>
 </body>
