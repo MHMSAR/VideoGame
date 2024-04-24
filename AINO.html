@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +10,7 @@
     <!-- Includes the p5.collide2D addon library -->
     <script defer src="p5.collide2d.js"></script>
     <script src="p5.sound.js"></script>
-    <title>AINO</title>
+    <title>Lunar_Lab</title>
     <style>
         html, body{
             margin: 0;
@@ -18,10 +20,10 @@
             align-items: center;
             height: 100vh;
             overflow: hidden;
-            background-color: darkgray;
+            background-color: black;
         }
         
-        
+
 
 
     </style>
@@ -31,7 +33,7 @@
         let window_w = (window.innerWidth)
         let window_h = (window.innerHeight)
         let canvas
-
+        
         let player_sprite_idle_direction_right
         let player_sprite_idle_direction_left
         let sprite_direction = false //left is true and vice versa
@@ -41,6 +43,10 @@
 
         let player_x = (window_w/2)
         let player_y = (window_h/2)
+        
+
+        // let maphitboxX = ((window_h - (window_h-275))/2)
+        // let maphitboxY = ((window_h - (window_h-275))/2)
 
         let hit_left = false
         let hit_right = false
@@ -48,102 +54,172 @@
         let hit_down = false
 
 
-        let hitbox_playerX = (window_h/2)-27
-        let hitbox_playerY = (window_h/2)-34
+        let hitbox_playerX = (window_h/2-72)
+        let hitbox_playerY = (window_h/2-72)
+
 
         let map_sprite
-        let Xmap_sprite 
-        let Ymap_sprite  // position of start of map
+        let Xmap_sprite = 450
+        let Ymap_sprite = 120
 
-        let timeint
-        let timer1 
+        let FDHB = false
+        let discoveredFDHB = false
 
-        let timerStarted = false
-        let timerStopped = false
-        let elapsedTime
+        let chestOne = false
+        let FirstChestDis = false
+        let HEAPC = false //high energy antimatter partical crowbar or heap-c
 
-        let video
-        let videoPlayed
+        let girl_dialog = false
+        let talked_girl_dialog = false
 
-        let PAAlertOne = false
-        let ATKOne = false
+        let tab_itracsin = false
+        let triggered_tab = false
+        let startTime 
+        let elapsedTime 
+        let timerStarted = false 
+        let timerStopped = false 
+        let COMMENCE = false
 
-        let confirmDio1 
-        let confirmDio2 
+        let johnstart = false
+        let john_ttyl = false
 
-        function videofunc(){
-            // video = createVideo('SolStorm.mp4')
-            // video.size(1060,596.25)
-            // video.play()
-            // if (elapsedTime > 11){
-            //     video.hide()
-            // }
-            window.open('storm.html','','width=' + 1280 + ', height=' + 720)
-            
-        }
+        let hit_exit 
 
-        function time(){
-            if (!timerStarted) {
-                startTime = millis(); // Start the timer
-                timerStarted = true;
+
+
+
+
+        function map_border() {
+            // fill('blue')
+            rect(Xmap_sprite,Ymap_sprite-40,2000,100)// up 
+            rect(Xmap_sprite,Ymap_sprite+660,1490,100)//  down
+            rect(Xmap_sprite-100,Ymap_sprite,100,700)//  left /
+            rect(Xmap_sprite+1380,Ymap_sprite+660,100,390)// left/
+            rect(Xmap_sprite+1100,Ymap_sprite+950, 300, 100)// up
+            rect(Xmap_sprite+1100,Ymap_sprite+1000,150,1800)//left/
+            rect(Xmap_sprite+1100,Ymap_sprite+2700,800,100)//down
+            rect(Xmap_sprite+1800,Ymap_sprite+2700,150,700)//left/
+            rect(Xmap_sprite+1800,Ymap_sprite+3400, 1700,100)//down
+            rect(Xmap_sprite+3400,Ymap_sprite+2700,400,800)//right and the exit
+            rect(Xmap_sprite+2460,Ymap_sprite+2700,1100,70)//up 
+            rect(Xmap_sprite+2460,Ymap_sprite+2630,20,140)//right
+            rect(Xmap_sprite+2460,Ymap_sprite+2630,1100,70)//down
+            rect(Xmap_sprite+2550,Ymap_sprite+600,100,2000)//right
+            rect(Xmap_sprite+2000,Ymap_sprite+950,1600,100)//up
+            rect(Xmap_sprite+2000,Ymap_sprite,100,1000)//right
+
+            //desk borders
+            rect(Xmap_sprite+1200,Ymap_sprite+1670,150,100)//down
+            rect(Xmap_sprite+1200,Ymap_sprite+1670,150,400)// left and interact
+            rect(Xmap_sprite+1200,Ymap_sprite+2000,150,100)//up
+            //left
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite-100,Ymap_sprite,100,700) ){
+                hit_left = true
             }
-            elapsedTime = (millis()-startTime)/1000
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1380,Ymap_sprite+660,100,390)){
+                hit_left = true
+                
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1100,Ymap_sprite+1000,150,1800)){
+                hit_left = true
+               
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1800,Ymap_sprite+2700,150,700)){
+                hit_left = true
+              
+            }
 
+            //desk  
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1150,Ymap_sprite+1670,150,50)){
+                hit_down = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1200,Ymap_sprite+1670,150,400)){
+                hit_left = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1150,Ymap_sprite+2000,150,50)){
+                hit_up = true
+            }
             
 
+            //right
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+3400,Ymap_sprite+2700,400,800)){ // exit
+                hit_right = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2460,Ymap_sprite+2630,20,140)){
+                hit_right = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2550,Ymap_sprite+600,100,2000)){
+                hit_right = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2000,Ymap_sprite,100,1000)){
+                hit_right = true
+            }
+
+
+            //up
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite,Ymap_sprite-40,2000,100)) {
+                hit_up = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1100,Ymap_sprite+950, 300, 100)) {
+                hit_up = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2460,Ymap_sprite+2700,1100,70)) {
+                hit_up = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2000,Ymap_sprite+950,1600,100)) {
+                hit_up = true
+            }
+
+
+            //down
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite,Ymap_sprite+660,1490,100)) {
+                hit_down = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1100,Ymap_sprite+2700,800,100)) {
+                hit_down = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1800,Ymap_sprite+3400, 1700,100)) {
+                hit_down = true
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2460,Ymap_sprite+2630,1100,70)) {
+                hit_down = true
+            }
+            
         }
-
-        function border() {
-
-
-                    
-        // fill(0,0,0,0)
-        fill('black')
-        rect(0,window_h-4,window_h,4)// bottom
-        rect(-60,0,64,window_h)// left
-        rect(window_h-4,0,64,window_h) // rihgt
-        rect(0,-60,window_h,64) // up
-
-        hit_left = collideRectRect(hitbox_playerX, hitbox_playerY, 75, 100, -60, 0, 64, window_h)// first four is sprite, vice versa
-        hit_right = collideRectRect(hitbox_playerX, hitbox_playerY, 75, 100, window_h-4,0,64,window_h)
-        hit_down = collideRectRect(hitbox_playerX, hitbox_playerY, 75, 100, 0,window_h-4,window_h,0)
-        hit_up = collideRectRect(hitbox_playerX, hitbox_playerY, 75, 100,0,-60,window_h,64)
-
-
-
-
-        }
-
+        
         function sprites(){
             player_sprite_idle_direction_left = createImg('astrobob_left.gif')
-            player_sprite_idle_direction_left.size(100,100)
+            player_sprite_idle_direction_left.size(144,144)
             player_sprite_idle_direction_left.style('position','absolute')
             player_sprite_idle_direction_left.style('transform', 'translate(-50%, -50%)')
             player_sprite_idle_direction_left.hide()
 
             player_sprite_idle_direction_right = createImg('astrobob_right.gif')
-            player_sprite_idle_direction_right.size(100,100)
+            player_sprite_idle_direction_right.size(144,144)
             player_sprite_idle_direction_right.style('position','absolute')
             player_sprite_idle_direction_right.style('transform', 'translate(-50%, -50%)')
             player_sprite_idle_direction_right.hide()
 
             player_sprite_run_right = createImg('astrobob_walk_right.gif')
-            player_sprite_run_right.size(100,100)
+            player_sprite_run_right.size(144,144)
             player_sprite_run_right.style('position','absolute')
             player_sprite_run_right.style('transform', 'translate(-50%, -50%)')
             player_sprite_run_right.hide()
 
             player_sprite_run_left = createImg('astrobob_walk_left.gif')
-            player_sprite_run_left.size(100,100)
+            player_sprite_run_left.size(144,144)
             player_sprite_run_left.style('position','absolute')
             player_sprite_run_left.style('transform', 'translate(-50%, -50%)')
             player_sprite_run_left.hide()
         }
+        
+        function player_sprite(){
 
-        function player_sprite(){            
+            
 
-            fill(0,0,0,0)
-            rect(hitbox_playerX,hitbox_playerY,75,100)//player hitbox
+            
+            rect(hitbox_playerX,hitbox_playerY,144,144)//player hitbox
+
 
             if (keyIsDown(LEFT_ARROW)){
                 sprite_direction = true
@@ -154,6 +230,8 @@
 
             }
 
+
+
             if (keyIsDown(RIGHT_ARROW)) {
                 sprite_direction = false
                 player_sprite_run_right.show()
@@ -161,6 +239,7 @@
                 player_sprite_idle_direction_right.hide()
                 player_sprite_run_left.hide()
             }
+
 
 
             if (keyIsDown(UP_ARROW)) {
@@ -179,6 +258,7 @@
             }
 
 
+
             if (keyIsDown(DOWN_ARROW)) {
                 if (sprite_direction){
                     player_sprite_run_right.hide()
@@ -195,6 +275,7 @@
             }
 
 
+            
             if (sprite_direction == true &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false )  &&(keyIsDown(UP_ARROW) == false ) &&(keyIsDown(DOWN_ARROW) == false )){
                 // idle ani
                 //  overides the walking animation with idle
@@ -223,44 +304,44 @@
             player_sprite_run_left.position(player_x,player_y)
             player_sprite_run_right.position(player_x,player_y)
 
-            if (keyIsDown(LEFT_ARROW)&& hit_left == false){
-                player_x -= 10
-                hitbox_playerX -=10
+            // if (keyIsDown(LEFT_ARROW)&& hit_left == false){
+            //     player_x -= 1
+            //     hitbox_playerX -=1
                 
 
-            }
+            // }
 
 
 
-            if (keyIsDown(RIGHT_ARROW)&& hit_right == false) {
-                player_x += 10
-                hitbox_playerX +=10
-            }
+            // if (keyIsDown(RIGHT_ARROW)&& hit_right == false) {
+            //     player_x += 1
+            //     hitbox_playerX +=1
+            // }
 
 
 
             if (keyIsDown(UP_ARROW)&& hit_up== false) {
-                player_y -= 10
-                hitbox_playerY -= 10
+                player_y -= 1
+                hitbox_playerY -= 1
             }
 
 
 
             if (keyIsDown(DOWN_ARROW)&& hit_down == false) {
-                player_y += 10
-                hitbox_playerY +=10
+                player_y += 1
+                hitbox_playerY +=1
             }
 
 
             
-            if (sprite_direction == true &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false )  &&(keyIsDown(UP_ARROW) == false ) &&(keyIsDown(DOWN_ARROW) == false )){
-                //  overides the walking animation with idle
+            // if (sprite_direction == true &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false )  &&(keyIsDown(UP_ARROW) == false ) &&(keyIsDown(DOWN_ARROW) == false )){
+            //     //  overides the walking animation with idle
                 
-            }
-            if (sprite_direction == false &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false )  &&(keyIsDown(UP_ARROW) == false ) &&(keyIsDown(DOWN_ARROW) == false )){ 
-                //  overides the walking animation with idle
+            // }
+            // if (sprite_direction == false &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false )  &&(keyIsDown(UP_ARROW) == false ) &&(keyIsDown(DOWN_ARROW) == false )){ 
+            //     //  overides the walking animation with idle
 
-            }
+            // }
             
 
 
@@ -269,52 +350,222 @@
 
 
         }
+      
+        function border() {
 
-        function phaseOne(){
-            if (elapsedTime > 18 && (!PAAlertOne)) {
-                confirmDio1 = window.confirm("You: I thought this was the cargo bay...")
-                confirmDio2= window.confirm("PA SYSTEM: ALL OF OUR MACHINE HAS GONE HAYWIRE, PLEASE BE ON ALERT AND AVOID THE MACHINERY AND THEIR LASER GUIDENCE SYSTEM.")
-                PAAlertOne = true
-            }
-            if ((elapsedTime>25)&&(!ATKOne)) {
-                stroke('red')
-                rect(window_h/2-50,0,100,window_h)//first atk laser line
-                
-            }
+
             
+            fill(0,0,0,0)
+            rect(0,window_h-4,window_h,0)// bottom
+            rect(-60,0,64,window_h)// left
+            rect(window_h-4,0,64,window_h) // rihgt
+            rect(0,-60,window_h,64) // up
+
+            hit_left = collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144, -60, 0, 64, window_h)// first four is sprite, vice versa
+            hit_right = collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144, window_h-4,0,64,window_h)
+            hit_down = collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144, 0,window_h-4,window_h,0)
+            hit_up = collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,0,-60,window_h,64)
+
+
+            
+
+        }
+        
+        function map_movement(){
+
+
+            
+            image(map_sprite,Xmap_sprite,Ymap_sprite)
+
+            
+
+            if (keyIsDown(RIGHT_ARROW)&&(hit_right==false)) {
+                Xmap_sprite -= 6
+            }
+            if (keyIsDown(DOWN_ARROW)&&(hit_down==false)) {
+                Ymap_sprite -= 6
+            }
+            if (keyIsDown(UP_ARROW)&&(hit_up==false)) {
+                Ymap_sprite += 6
+            }
+            if (keyIsDown(LEFT_ARROW)&&(hit_left==false)) {
+                Xmap_sprite += 6
+            }
+
+            
+
+
+
         }
 
-        function preload(){
+        function first_dialog_hitbox() {
+            // fill('red')// remove
+            rect(Xmap_sprite + 520 ,Ymap_sprite-50,50,1000)
+
+            FDHB = collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite + 520 ,Ymap_sprite-50,50,1000)
+            if ((FDHB) && (discoveredFDHB == false)) { 
+                window.alert('PA_system: ALL ARRIVING PERSONEL, PLEASE RETRIVE YOUR HEAP-C FROM THE STORAGE UNIT.')
+                discoveredFDHB = true
+                
+            }
+
+        }
+
+        function chest_ichi() {
+            rect(Xmap_sprite + 665 ,Ymap_sprite +130,150,80)
+            
+            chestOne = collideRectRect(hitbox_playerX,hitbox_playerY,144,144,Xmap_sprite + 665 ,Ymap_sprite +130,150,80)
+            if ((chestOne) && (FirstChestDis == false) && (keyIsDown(13))){
+                HEAPC = true
+                FirstChestDis = true
+                window.alert('You Have Found the HEAV-C!')
+            }
+        }
+
+        function girl_dialog_box(){
+            // fill('red')
+            rect(Xmap_sprite+1400,Ymap_sprite+1100,600,50)
+            girl_dialog = collideRectRect(hitbox_playerX,hitbox_playerY,144,144,Xmap_sprite+1400,Ymap_sprite+1100,600,50)
+            if ((girl_dialog)&&(talked_girl_dialog == false)){
+
+                player_sprite_idle_direction_left.show()
+                player_sprite_idle_direction_right.hide()
+                player_sprite_run_right.hide()
+                player_sprite_run_left.hide()
+
+                talked_girl_dialog = true
+
+                window.alert('Hey, did you get the HEAPC?')
+                if (HEAPC == false) {
+                    window.alert("Here just have my spare. I'm the one who has to supply that storage unit with it anyways...")
+                }
+                window.alert("I really don't know why they call it that; it's basically a glorified space crowbar. Also, name's Theta")
+                window.alert("Anyways, get started on the Atom Smashing in the Partical Accelerator just down from here.")
+                window.alert("Use the TABLET to start it.")
+                window.alert("After you're done, tell John over there that your done. I think he's to the right and probably slaving away on his computer.")
+
+            }
+        }   
+
+
+        function TABLET() {
+            tab_itracsin = collideRectRect(Xmap_sprite+1200,Ymap_sprite+1670,150,400,hitbox_playerX,hitbox_playerY,144,144)
+            if ((tab_itracsin)&&(!triggered_tab)) {
+                // fire partiucle acc
+                if ((!COMMENCE)&&(keyIsDown(13))) {
+                    
+                    window.alert("COMMENCE THE OPERATION??? press (ok)")
+                    
+                    COMMENCE = true
+                }
+                
+            
+            }
+            if (!timerStarted && !timerStopped&& (COMMENCE)) {
+                    startTime = millis() // Start the timer
+                    timerStarted = true
+                }
+                    
+                if (!timerStopped && (COMMENCE) ) {
+                    // Calculate elapsed time
+                    elapsedTime = (millis() - startTime)/1000
+
+                    if ((elapsedTime<5)&&(COMMENCE)){
+                   //shaky map
+                    //play shound
+                    
+                    Xmap_sprite += 12
+                    }
+                    if ((elapsedTime>5)&&(COMMENCE)) {
+                        Xmap_sprite -= 12
+
+                        //play audio here
+
+                        
+                        if (elapsedTime>10){
+                            COMMENCE = false
+                        }
+                    }
+                    
+                }
+        }
+        
+        function John() {
+            // fill('red')
+            rect(Xmap_sprite+2530,Ymap_sprite+1200,100,300)
+            johnstart = collideRectRect(hitbox_playerX,hitbox_playerY,144,144,Xmap_sprite+2530,Ymap_sprite+1200,100,300)
+            if ((johnstart)&&(!john_ttyl)&&(elapsedTime>10)) {
+                john_ttyl = true
+                window.alert("Oh you're done? I was wondering why my seat and the room disappeared for a few moments...")
+                window.alert("Ill take the new particle out and send it to 550W.")
+                window.alert("You know, our AI supercomputer? Let's hope it does something and it doesn't go wrong.")
+
+                
+            }
+        }
+
+        function exit() {
+            hit_exit = collideRectRect(hitbox_playerX,hitbox_playerY,144,144,Xmap_sprite+3400,Ymap_sprite+2700,400,800)
+            if (hit_exit&&john_ttyl){
+                window.location.href = 'AINO.html'
+                noLoop()
+            }
+        } 
+
+        function preload() {
+            map_sprite = loadImage('lunarlab.png')
             sprites()
             
+ 
+            
+           
         }
 
-        function setup(){
+        function setup() {
             canvas = createCanvas(window_h,window_h)
             
-            timeint = (millis())//div 1000 = seconds instead of milli
-            // videoPlayed = image(video,0,0,1060,596.25)
-            videofunc()
+            // let canvasX = (windowWidth - width) / 2
+            // let canvasY = (windowHeight - height) / 2
+            // canvas.position(canvasX, canvasY) 
+            
+            map_sprite.resize(3700,3700)
+
+            window.alert('Please use the ARROW keys for movement & ENTER key for interaction with objects.')
+            
         }
+
+
 
         function draw() {
             
             clear()
             noStroke()
+
             if (keyIsDown(192)) {
                 stroke('pink')
             }
-            border()
+
+            
+            
+            map_movement()
             player_sprite()
             player_movement()
-            time()
-            phaseOne()
+            border()
+            first_dialog_hitbox()
+            chest_ichi()
+            map_border()
+            girl_dialog_box()
+            TABLET()
+            John()
+            exit()
+            console.log()
             
-            // background('black')
-            console.log(elapsedTime)
+            
+            
+
+
         }
-
-
     </script>
+    
 </body>
 </html>
