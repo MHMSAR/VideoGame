@@ -65,8 +65,13 @@
         let video
         let videoPlayed
 
-        let PAAlertOne
-        let ATKOne
+        let PAAlertOne = false
+        let ATKOne = false
+
+        let confirmDio1 
+        let confirmDio2 
+        let Resetedtimer = false
+        
 
         function videofunc(){
             // video = createVideo('SolStorm.mp4')
@@ -88,6 +93,15 @@
 
             
 
+        }
+        
+        function timerReset(){
+            if (confirmDio2&&(!Resetedtimer)){
+                startTime = millis()
+                elapsedTime/0
+                Resetedtimer = true
+            }
+            
         }
 
         function border() {
@@ -268,13 +282,14 @@
         }
 
         function phaseOne(){
-            if (elapsedTime > 11 && (!PAAlertOne)) {
-                window.alert("PA SYSTEM: ALL OF OUR MACHINE HAS GONE HAYWIRE, PLEASE BE ON ALERT AND AVOID THE MACHINERY AND THEIR LASER GUIDENCE SYSTEM.")
+            if (elapsedTime > 18 && (!PAAlertOne)) {
+                confirmDio1 = window.confirm("You: I thought this was the cargo bay...")
+                confirmDio2= window.confirm("PA SYSTEM: ALL OF OUR MACHINE HAS GONE HAYWIRE, PLEASE BE ON ALERT AND AVOID THE MACHINERY AND THEIR LASER GUIDENCE SYSTEM.")
                 PAAlertOne = true
             }
-            if ((elapsedTime>14)&&(!ATKOne)) {
-                fill('red')
-                rect()//first atk laser line
+            if ((elapsedTime>25)&&(!ATKOne)) {
+                stroke('red')
+                rect(window_h/2-50,0,100,window_h)//first atk laser line
             
             }
             
@@ -287,7 +302,7 @@
 
         function setup(){
             canvas = createCanvas(window_h,window_h)
-            window.alert("You: I thought this was the cargo bay...")
+            
             timeint = (millis())//div 1000 = seconds instead of milli
             // videoPlayed = image(video,0,0,1060,596.25)
             videofunc()
@@ -305,7 +320,7 @@
             player_movement()
             time()
             phaseOne()
-            
+            timerReset()
             // background('black')
             console.log(elapsedTime)
         }
