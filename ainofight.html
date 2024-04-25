@@ -82,22 +82,35 @@
 
 
         let forkliftone
-        let forklftOne_sound
         let Xone_forklift = (window_h/2)-100
         let Yone_forklift = -100
         let flsound_one_played = false
 
         let forklifttwo
-        let forklfttwo_sound
-        let Xtwo_forklift = (window_h/2)-100
-        let Ytwo_forklift = -100
+        let Xtwo_forklift = -100
+        let Ytwo_forklift = (window_h/2)-100
         let flsound_two_played = false
 
         let forkliftthree
-        let forklftthree_sound
-        let Xthree_forklift = (window_h/2)-100
+        let Xthree_forklift = window_h*0.75
         let Ythree_forklift = -100
         let flsound_three_played = false
+
+        let forklift4
+        let X4_forklift = (window_h*0.5)-100
+        let Y4_forklift = -100
+        let flsound_4_played = false
+
+        let forklift5
+        let X5_forklift = (window_h*0.25)-200
+        let Y5_forklift = -100
+        let flsound_5_played = false
+        
+        let forkliftFX
+
+        let ATK2 = false
+        let ATK3 = false
+
 
 
         function videofunc(){
@@ -278,7 +291,6 @@
 
         }
 
-
         function player_movement() {
 
 
@@ -336,11 +348,31 @@
         }
 
         function player_dmg() {
-            if (collideRectRect(hitbox_playerX, hitbox_playerY,75,100,Xone_forklift,Yone_forklift,200,200)) {// frklift one
+            if (collideRectRect(hitbox_playerX, hitbox_playerY,75,100,Xone_forklift+25,Yone_forklift+25,150,150)&&(!ATKOne)) {// frklift one
                 playerhitted = true
-                health -=10
+                health -= 7
                 
             }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY,75,100,Xtwo_forklift+25,Ytwo_forklift+25,150,150)&&(!ATK2)) {// frklift one
+                playerhitted = true
+                health -=7
+                
+            }
+            if (collideRectRect(hitbox_playerX,hitbox_playerY,75,100,Xthree_forklift+25,Ythree_forklift+25,150,150)) {
+                playerhitted = true
+                health -=7
+            }
+
+            if (collideRectRect(hitbox_playerX,hitbox_playerY,75,100,X4_forklift+25,Y4_forklift+25,150,150)) {
+                playerhitted = true
+                health -=7
+            }
+
+            if (collideRectRect(hitbox_playerX,hitbox_playerY,75,100,X5_forklift+25,Y5_forklift+25,150,150)) {
+                playerhitted = true
+                health -=7
+            }
+
 
             if (health < 1) {
                 playerIsDead = true
@@ -357,7 +389,7 @@
             // }
 
             
-            if ((elapsedTime>1)&&(!ATKOne)&&(confirmDio2)) { // should be 25 seconds for the start
+            if ((elapsedTime>1)&&(!ATKOne)&&(confirmDio2)) { 
                 
 
                 if ((elapsedTime>1.2)&&(!ATKOne)&&(confirmDio2)) {
@@ -365,24 +397,26 @@
                     rect(window_h/2-100,0,200,window_h)//first atk laser line
                     
 
-                    if ((elapsedTime>2)&&(!ATKOne)&&(confirmDio2)) {
+                    if ((elapsedTime>2)) {
 
 
                         //hitbox
                         // fill('red')
-                        rect(Xone_forklift,Yone_forklift,200,200)// forklift hitbox
+                        rect(Xone_forklift+25,Yone_forklift+25,150,150)// forklift hitbox
                         
                         forkliftone = image(img_forklift,Xone_forklift,Yone_forklift,200,200)
                         
 
-                        Yone_forklift += 15
+                        Yone_forklift += 25// speed
                         
                         if (!flsound_one_played) {
-                            forklftOne_sound.play()
+                            forkliftFX.play()
                             flsound_one_played = true
                         }
 
-                        if (elapsedTime > 4) {
+                        if (elapsedTime > 3) {
+                            startTime = millis()
+                            elapsedTime/0
                             ATKOne = true
                         }
                         
@@ -394,24 +428,121 @@
             
             }
             
+            if ((!ATK2)&&(ATKOne)){ 
+                stroke('red')
+                rect(0,window_h/2-100,window_h,200)
+                rect(Xtwo_forklift+25,Ytwo_forklift+25,150,150)
+                forklifttwo = image(img_forklift,Xtwo_forklift,Ytwo_forklift,200,200)
+                Xtwo_forklift += 22
+                if ((Xtwo_forklift>window_h)&&(!ATK2)) {
+                    ATK2 = true
+                    startTime = millis()
+                    elapsedTime/0
+                    ATKOne = true
+                    
+                }
+
+                if ((Xtwo_forklift > 1)&&(!flsound_two_played)) {
+                    forkliftFX.play()
+                    flsound_two_played = true
+                    
+                    
+                }
+
+                
+            }
+
+            if (ATK2&&(!ATK3)) {
+
+                stroke('red')
+                rect(window_h*0.75,0,200,window_h)// lzr rail
+                rect((window_h*0.5)-100,0,200,window_h)
+                rect((window_h*0.25)-200,0,200,window_h)
+
+                rect(Xthree_forklift+25,Ythree_forklift+25,150,150)//hitboxes
+                rect(X4_forklift+25,Y4_forklift+25,150,150)
+                rect(X5_forklift+25,Y5_forklift+25,150,150)
+
+                forkliftthree = image(img_forklift,Xthree_forklift,Ythree_forklift,200,200)
+                forklift4 = image(img_forklift,X4_forklift,Y4_forklift,200,200)
+                forklift5 = image(img_forklift,X5_forklift,Y5_forklift,200,200)
+
+                Ythree_forklift += 21
+                Y4_forklift += 21
+                Y5_forklift += 21
+                
+
+
+                if ((Xthree_forklift>1)&&(!flsound_three_played)){
+                    forkliftFX.play()
+                    flsound_three_played = true
+                }
+                if ((Y5_forklift>window_h)&&(!ATK3)){
+                    ATK3 = true
+                    startTime = millis()
+                    elapsedTime/0
+                    
+                }
+            }
+
+            if (ATK3) {
+                elapsedTime*0
+                window.alert("PA SYSTEM: PLEASE EVACUATE THE ARK SPACE STATION.")
+                window.alert("Ḣ̴̢E̴͕̔Y̶͎͑ ̶̺͂G̴̥̉Ẽ̶̳T̵̺͠ ̵̖̅Ḓ̴͛Ȏ̸ͅW̸̜̅N̷̻̊ ̶̙̾T̸̛͙Ọ̷̈ ̷̲̍Ṫ̸ͅH̷̞͐É̷͔ ̷̮̾Ṡ̷͖Ŭ̵̮Ř̵͈F̸̬̿A̸̠̓C̶̮̎Ȇ̵͕ ̷̤̀O̶͔̽F̸̪͒ ̶͖̓Ț̴̌H̵͉̓E̷̥͋ ̴̖́M̴̗̂O̴̜͂O̸͎͒N̴͉͝,̴̈́ͅ ̴̞͑I̵͕͑L̷̡̎L̴͓̊ ̷̝̽S̴̺̕Ḙ̵̋E̷̘̓ ̵̘̈Ý̶̻Ô̶̖U̴̲͆.̷͇̉")
+                window.location.href = 'AINO.html'
+                endLoop()
+                
+            }
+            
+        }
+
+        function healthBar(){
+            let HPBarTriggered = true
+            //health bar outline
+            if ((elapsedTime>0.5)||(HPBarTriggered)) {
+                stroke(0)
+                fill(255)
+                
+                rect(window_h/2-120,50,240,50,10)
+    
+                //display health
+                let hpLength = (health/100)
+                noStroke()
+                fill('blue')
+                rect(window_h/2-120,50,240*hpLength,50,10)
+                
+    
+                if ((health < 100)){
+                    health += 0.01
+                }
+            }
         }
 
         function preload(){
             sprites()
-            forklftOne_sound = loadSound('forkliftFX.mp3')
+            forkliftFX = loadSound('forkliftFX.mp3')
             img_forklift = loadImage('forklift.png')
             
+            forkliftone = image(img_forklift,Xone_forklift,Yone_forklift,200,200)
+            forklifttwo = image(img_forklift,Xtwo_forklift,Ytwo_forklift,200,200)
+            forkliftthree = image(img_forklift,Xthree_forklift,Ythree_forklift,200,200)
+            forklift4 = image(img_forklift,X4_forklift,Y4_forklift,200,200)
+            forklift5 = image(img_forklift,X5_forklift,Y5_forklift,200,200)
         }
 
         function setup(){
             canvas = createCanvas(window_h,window_h)
-            confirmDio2= window.confirm("PA SYSTEM: ALL OF OUR MACHINE HAS GONE HAYWIRE, PLEASE BE ON ALERT AND AVOID THE MACHINERY AND THEIR LASER GUIDENCE SYSTEM.")
+            confirmDio2= window.confirm("PA SYSTEM: ALL OF OUR MACHINE HAS GONE HAYWIRE, PLEASE BE ON ALERT AND AVOID THE MACHINERY AND THEIR LASER GUIDENCE SYSTEM. IF YOU ARE ATTACKED, KEEP ATTENTION TO YOUR BATTERY BAR FOR EXTRACTION.")
             timeint = (millis())
+
             //remeber dio 2 is 18seconds after
 
         }
 
         function draw() {
+            if (!confirmDio2) {
+                location.reload()
+            }
             
             clear()
             noStroke()
@@ -424,9 +555,11 @@
             time()
             phaseOne()
             player_dmg()
+            healthBar()
             
+
             // background('black')
-            console.log(health)
+            console.log(ATK3)
         }
 
 
