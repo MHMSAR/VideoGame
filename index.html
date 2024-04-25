@@ -155,7 +155,7 @@
             E_rails.size(1280,2460)
 
             EAV_sound = loadSound('EAVup.mp3')
-            window.alert('press F11 or a key for full screen.')
+            
         }
 
 
@@ -251,10 +251,11 @@
 
                 if (eav_Y < -1000){ //lunar lab value set to true
                     console.log('sending entity...')
-                    window.location.href = 'LunarLab.html'
+                    window.open('LunarLab.html','','width=' + 1522 + ', height=' + 1064)
 
                     localStorage.setItem('lunar_lab_quicksave','true')
                     // store change other values to false
+                    noloop()
                 }
             }
             if ((PB == true)&&(ers_x>(window_w/2)-640)){
