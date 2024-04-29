@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="p5.js" ></script>
+    <!-- <script defer src="https://unpkg.com/p5"></script> -->
+    <!-- Includes the p5.collide2D addon library -->
+    <script defer src="p5.collide2d.js"></script>
+    <script src="p5.sound.js"></script>
+    <title>FIGHT_%</title>
+    <style>
+        html, body{
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            /* background-color: darkgray; */
+        }
+        
+        
+
+
+    </style>
+</head>
+<body>
+    <script>
+
+        let window_w = (window.innerWidth)
+        let window_h = (window.innerHeight)
+        let canvas  
+        
+        let player_sprite_idle_direction_right
+        let player_sprite_idle_direction_left
+        let sprite_direction = false //left is true and vice versa
+
+        let player_sprite_run_right
+        let player_sprite_run_left
+        let player_death_sprite
+        let hit_sound
+        let playerIsDead
+
+        let player_x = (window_w/2)
+        let player_y = (window_h/2)
+
+        let hit_left = false
+        let hit_right = false
+        let hit_up = false
+        let hit_down = false
+
+
+        let hitbox_playerX = (window_h/2)-37
+        let hitbox_playerY = (window_h/2)-47
+
+        let health = 100
+
+
+        let elapsedTime
+        let yapMoss
+
+        let FXForkPlay = false
+        
+
+        let atk1= false
+        let rect1display = false
+        let xTB1=0
+        let yTB1=0
+
+
+
+        function sprites(){
+            player_sprite_idle_direction_left = createImg('astrobob_left.gif')
+            player_sprite_idle_direction_left.size(100,100)
+            player_sprite_idle_direction_left.style('position','absolute')
+            player_sprite_idle_direction_left.style('transform', 'translate(-50%, -50%)')
+            player_sprite_idle_direction_left.hide()
+
+            player_sprite_idle_direction_right = createImg('astrobob_right.gif')
+            player_sprite_idle_direction_right.size(100,100)
+            player_sprite_idle_direction_right.style('position','absolute')
+            player_sprite_idle_direction_right.style('transform', 'translate(-50%, -50%)')
+            player_sprite_idle_direction_right.hide()
+
+            player_sprite_run_right = createImg('astrobob_walk_right.gif')
+            player_sprite_run_right.size(100,100)
+            player_sprite_run_right.style('position','absolute')
+            player_sprite_run_right.style('transform', 'translate(-50%, -50%)')
+            player_sprite_run_right.hide()
+
+            player_sprite_run_left = createImg('astrobob_walk_left.gif')
+            player_sprite_run_left.size(100,100)
+            player_sprite_run_left.style('position','absolute')
+            player_sprite_run_left.style('transform', 'translate(-50%, -50%)')
+            player_sprite_run_left.hide()
+
+            
+
+            deadLeft_sprite = createImg('deadleft.gif')
+            deadLeft_sprite.size(100,100)
+            deadLeft_sprite.style('position','absolute')
+            deadLeft_sprite.style('transform', 'translate(-50%, -50%)')
+            deadLeft_sprite.hide()
+
+            deadRight_sprite = createImg('deadRight.gif')
+            deadRight_sprite.size(100,100)
+            deadRight_sprite.style('position','absolute')
+            deadRight_sprite.style('transform', 'translate(-50%, -50%)')
+            deadRight_sprite.hide()
+        }
+
+        function player_sprite(){            
+
+            fill(0,0,0,0)
+            rect(hitbox_playerX,hitbox_playerY,75,100)//player hitbox
+
+            if (keyIsDown(LEFT_ARROW)){
+                sprite_direction = true
+                player_sprite_run_right.hide()
+                player_sprite_idle_direction_left.hide()
+                player_sprite_idle_direction_right.hide()
+                player_sprite_run_left.show()
+                
+                
+
+            }
+
+            if (keyIsDown(RIGHT_ARROW)) {
+                sprite_direction = false
+                player_sprite_run_right.show()
+                player_sprite_idle_direction_left.hide()
+                player_sprite_idle_direction_right.hide()
+                player_sprite_run_left.hide()
+                
+            }
+
+
+            if (keyIsDown(UP_ARROW)) {
+                if (sprite_direction){
+                    player_sprite_run_right.hide()
+                    player_sprite_idle_direction_left.hide()
+                    player_sprite_idle_direction_right.hide()
+                    player_sprite_run_left.show()
+                    
+                }
+                else {
+                    player_sprite_run_right.show()
+                    player_sprite_idle_direction_left.hide()
+                    player_sprite_idle_direction_right.hide()
+                    player_sprite_run_left.hide()
+                    
+                }
+            }
+
+
+            if (keyIsDown(DOWN_ARROW)) {
+                if (sprite_direction){
+                    player_sprite_run_right.hide()
+                    player_sprite_idle_direction_left.hide()
+                    player_sprite_idle_direction_right.hide()
+                    player_sprite_run_left.show()
+                    
+                }
+                else {
+                    player_sprite_run_right.show()
+                    player_sprite_idle_direction_left.hide()
+                    player_sprite_idle_direction_right.hide()
+                    player_sprite_run_left.hide()
+                    
+                    
+                }
+            }
+
+
+            if (sprite_direction == true &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false )  &&(keyIsDown(UP_ARROW) == false ) &&(keyIsDown(DOWN_ARROW) == false )&&(!playerIsDead)){
+                // idle ani
+                //  overides the walking animation with idle
+
+                player_sprite_idle_direction_left.show()
+                player_sprite_idle_direction_right.hide()
+                player_sprite_run_right.hide()
+                player_sprite_run_left.hide()
+                
+            }
+            if (sprite_direction == false &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false )  &&(keyIsDown(UP_ARROW) == false ) &&(keyIsDown(DOWN_ARROW) == false )&&(!playerIsDead)){
+                // idle ani
+                //  overides the walking animation with idle
+
+                player_sprite_idle_direction_left.hide()
+                player_sprite_idle_direction_right.show()
+                player_sprite_run_right.hide()
+                player_sprite_run_left.hide()
+                
+            }
+            if (playerIsDead){// ends page 
+                if (sprite_direction) {
+                    deadLeft_sprite.show()
+                }
+                if (!sprite_direction) {
+                    deadRight_sprite.show()
+                }
+                window.alert('YOU ARE DEAD')
+                location.reload()
+                player_sprite_idle_direction_left.hide()
+                player_sprite_idle_direction_right.hide()
+                player_sprite_run_right.hide()
+                player_sprite_run_left.hide()
+                
+                noLoop()
+                
+            }
+
+        }
+
+        function player_movement() {
+
+
+            player_sprite_idle_direction_left.position(player_x,player_y)
+            player_sprite_idle_direction_right.position(player_x,player_y)
+            player_sprite_run_left.position(player_x,player_y)
+            player_sprite_run_right.position(player_x,player_y)
+            deadLeft_sprite.position(player_x,player_y)
+            deadRight_sprite.position(player_x,player_y)
+
+            if (keyIsDown(LEFT_ARROW)&& hit_left == false){
+                player_x -= 10
+                hitbox_playerX -=10
+                
+
+            }
+
+
+
+            if (keyIsDown(RIGHT_ARROW)&& hit_right == false) {
+                player_x += 10
+                hitbox_playerX +=10
+            }
+
+
+
+            if (keyIsDown(UP_ARROW)&& hit_up== false) {
+                player_y -= 10
+                hitbox_playerY -= 10
+            }
+
+
+
+            if (keyIsDown(DOWN_ARROW)&& hit_down == false) {
+                player_y += 10
+                hitbox_playerY +=10
+            }
+
+
+
+            if (sprite_direction == true &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false )  &&(keyIsDown(UP_ARROW) == false ) &&(keyIsDown(DOWN_ARROW) == false )){
+                //  overides the walking animation with idle
+                
+            }
+            if (sprite_direction == false &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false )  &&(keyIsDown(UP_ARROW) == false ) &&(keyIsDown(DOWN_ARROW) == false )){ 
+                //  overides the walking animation with idle
+
+            }
+
+
+
+
+
+
+
+        }
+
+        function border() {
+
+
+                    
+            // fill(0,0,0,0)
+            fill('black')
+            rect(0,window_h-4,window_h,4)// bottom
+            rect(-60,0,64,window_h)// left
+            rect(window_h-4,0,64,window_h) // rihgt
+            rect(0,-60,window_h,64) // up
+
+            hit_left = collideRectRect(hitbox_playerX, hitbox_playerY, 75, 100, -60, 0, 64, window_h)// first four is sprite, vice versa
+            hit_right = collideRectRect(hitbox_playerX, hitbox_playerY, 75, 100, window_h-4,0,64,window_h)
+            hit_down = collideRectRect(hitbox_playerX, hitbox_playerY, 75, 100, 0,window_h-4,window_h,0)
+            hit_up = collideRectRect(hitbox_playerX, hitbox_playerY, 75, 100,0,-60,window_h,64)
+
+
+
+
+        }
+
+        function healthBar(){
+            let HPBarTriggered = true
+            //health bar outline
+            stroke(0)
+            fill(255)
+                
+            rect(window_h/2-120,50,240,50,10)
+    
+            //display health
+            let hpLength = (health/100)
+            noStroke()
+            fill('blue')
+            rect(window_h/2-120,50,240*hpLength,50,10)
+                
+    
+                if ((health < 100)){
+                    health += 0.01
+                }
+        }
+
+        function time() {
+            if (yapMoss) {
+                elapsedTime = (millis()-startTime)/1000
+            }
+            if (!yapMoss) {
+                location.reload()
+            }
+            
+
+
+            
+        }
+
+        function Phase1() {
+            if ((elapsedTime>0.5)&&(!atk1)){
+                fill(0,0,0,0)
+                stroke('Orange') //non physicle atks
+                rotate(radians(45))
+                if (!rect1display) {
+                    rect(0,-window_h*0.145,window_h*1.5,300)
+                }
+                if (elapsedTime>1.2){
+                    rect(xTB1,yTB1+(-window_h*0.145),300,300)
+                    xTB1+=12
+                    
+                    if (xTB1>(window_h/16)) {
+                        //play audio
+                        rect1display = true
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+        function preload() {
+            sprites()
+        }
+        function setup() {
+            yapMoss = window.confirm("WEll, THATS AFTER IM DONE WITH YOU. :]")
+            canvas = createCanvas(window_h,window_h)
+            startTime = millis()
+            
+        }
+        function draw(){
+            
+            clear()
+            time()
+            noStroke()
+            border()
+            player_sprite()
+            player_movement()
+            healthBar()
+            Phase1()
+            console.log(elapsedTime)
+        }
+
+    </script>
+</body>
+</html>

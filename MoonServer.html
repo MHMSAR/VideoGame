@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="p5.js" ></script>
+    <!-- <script defer src="https://unpkg.com/p5"></script> -->
+    <!-- Includes the p5.collide2D addon library -->
+    <script defer src="p5.collide2d.js"></script>
+    <script src="p5.sound.js"></script>
+    <title>MoonServer</title>
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/anurati');
+        html, body{
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Anurati', sans-serif;
+            text-transform: uppercase;
+            font-size: 18px;
+        }
+        
+
+
+
+    </style>
+</head>
+<body>
+    <script>
+        let window_w = (window.innerWidth)
+        let window_h = (window.innerHeight)
+        let canvas
+
+        let player_sprite_idle_direction_right
+        let player_sprite_idle_direction_left
+        let sprite_direction = false //left is true and vice versa
+
+        let player_sprite_run_right
+        let player_sprite_run_left
+
+        let player_x = (window_w/2)
+        let player_y = (window_h/2)
+
+        let hit_left = false
+        let hit_right = false
+        let hit_up = false
+        let hit_down = false
+
+
+        let hitbox_playerX = (window_h/2-72)
+        let hitbox_playerY = (window_h/2-72)
+
+
+        let map_sprite
+        let Xmap_sprite = -1470
+        let Ymap_sprite = -15
+
+        function sprites(){
+            player_sprite_idle_direction_left = createImg('astrobob_left.gif')
+            player_sprite_idle_direction_left.size(144,144)
+            player_sprite_idle_direction_left.style('position','absolute')
+            player_sprite_idle_direction_left.style('transform', 'translate(-50%, -50%)')
+            player_sprite_idle_direction_left.hide()
+
+            player_sprite_idle_direction_right = createImg('astrobob_right.gif')
+            player_sprite_idle_direction_right.size(144,144)
+            player_sprite_idle_direction_right.style('position','absolute')
+            player_sprite_idle_direction_right.style('transform', 'translate(-50%, -50%)')
+            player_sprite_idle_direction_right.hide()
+
+            player_sprite_run_right = createImg('astrobob_walk_right.gif')
+            player_sprite_run_right.size(144,144)
+            player_sprite_run_right.style('position','absolute')
+            player_sprite_run_right.style('transform', 'translate(-50%, -50%)')
+            player_sprite_run_right.hide()
+
+            player_sprite_run_left = createImg('astrobob_walk_left.gif')
+            player_sprite_run_left.size(144,144)
+            player_sprite_run_left.style('position','absolute')
+            player_sprite_run_left.style('transform', 'translate(-50%, -50%)')
+            player_sprite_run_left.hide()
+        }
+
+        function player_sprite(){
+
+            
+
+            // fill('red')
+            rect(hitbox_playerX,hitbox_playerY,144,144)//player hitbox
+
+
+            if (keyIsDown(LEFT_ARROW)){
+                sprite_direction = true
+                player_sprite_run_right.hide()
+                player_sprite_idle_direction_left.hide()
+                player_sprite_idle_direction_right.hide()
+                player_sprite_run_left.show()
+
+            }
+
+
+
+            if (keyIsDown(RIGHT_ARROW)) {
+                sprite_direction = false
+                player_sprite_run_right.show()
+                player_sprite_idle_direction_left.hide()
+                player_sprite_idle_direction_right.hide()
+                player_sprite_run_left.hide()
+            }
+
+
+
+            if (keyIsDown(UP_ARROW)) {
+                if (sprite_direction){
+                    player_sprite_run_right.hide()
+                    player_sprite_idle_direction_left.hide()
+                    player_sprite_idle_direction_right.hide()
+                    player_sprite_run_left.show()
+                }
+                else {
+                    player_sprite_run_right.show()
+                    player_sprite_idle_direction_left.hide()
+                    player_sprite_idle_direction_right.hide()
+                    player_sprite_run_left.hide()
+                }
+            }
+
+
+
+            if (keyIsDown(DOWN_ARROW)) {
+                if (sprite_direction){
+                    player_sprite_run_right.hide()
+                    player_sprite_idle_direction_left.hide()
+                    player_sprite_idle_direction_right.hide()
+                    player_sprite_run_left.show()
+                }
+                else {
+                    player_sprite_run_right.show()
+                    player_sprite_idle_direction_left.hide()
+                    player_sprite_idle_direction_right.hide()
+                    player_sprite_run_left.hide()
+                }
+            }
+
+
+
+            if (sprite_direction == true &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false )  &&(keyIsDown(UP_ARROW) == false ) &&(keyIsDown(DOWN_ARROW) == false )){
+                // idle ani
+                //  overides the walking animation with idle
+
+                player_sprite_idle_direction_left.show()
+                player_sprite_idle_direction_right.hide()
+                player_sprite_run_right.hide()
+                player_sprite_run_left.hide()
+            }
+            if (sprite_direction == false &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false )  &&(keyIsDown(UP_ARROW) == false ) &&(keyIsDown(DOWN_ARROW) == false )){
+                // idle ani
+                //  overides the walking animation with idle
+
+                player_sprite_idle_direction_left.hide()
+                player_sprite_idle_direction_right.show()
+                player_sprite_run_right.hide()
+                player_sprite_run_left.hide()
+            }
+
+
+        }
+
+        function map_movement(){
+
+            // map sprite is in preload
+            
+            image(map_sprite,Xmap_sprite,Ymap_sprite)
+
+
+
+            if (keyIsDown(RIGHT_ARROW)&&(hit_right==false)) {
+                Xmap_sprite -= 6
+            }
+            if (keyIsDown(DOWN_ARROW)&&(hit_down==false)) {
+                Ymap_sprite -= 6
+            }
+            if (keyIsDown(UP_ARROW)&&(hit_up==false)) {
+                Ymap_sprite += 6
+            }
+            if (keyIsDown(LEFT_ARROW)&&(hit_left==false)) {
+                Xmap_sprite += 6
+            }
+
+        }
+        function player_movement() {
+
+
+            player_sprite_idle_direction_left.position(player_x,player_y)
+            player_sprite_idle_direction_right.position(player_x,player_y)
+            player_sprite_run_left.position(player_x,player_y)
+            player_sprite_run_right.position(player_x,player_y)
+
+            // if (keyIsDown(LEFT_ARROW)&& hit_left == false){
+            //     player_x -= 1
+            //     hitbox_playerX -=1
+                
+
+            // }
+
+
+
+            // if (keyIsDown(RIGHT_ARROW)&& hit_right == false) {
+            //     player_x += 1
+            //     hitbox_playerX +=1
+            // }
+
+
+
+            // if (keyIsDown(UP_ARROW)&& hit_up== false) {
+            //     player_y -= 1
+            //     hitbox_playerY -= 1
+            // }
+
+
+
+            // if (keyIsDown(DOWN_ARROW)&& hit_down == false) {
+            //     player_y += 1
+            //     hitbox_playerY +=1
+            // }
+
+
+            
+            // if (sprite_direction == true &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false )  &&(keyIsDown(UP_ARROW) == false ) &&(keyIsDown(DOWN_ARROW) == false )){
+            //     //  overides the walking animation with idle
+                
+            // }
+            // if (sprite_direction == false &&(keyIsDown(RIGHT_ARROW) == false ) &&(keyIsDown(LEFT_ARROW) == false )  &&(keyIsDown(UP_ARROW) == false ) &&(keyIsDown(DOWN_ARROW) == false )){ 
+            //     //  overides the walking animation with idle
+
+            // }
+            
+
+
+
+
+
+
+        }
+
+        function border(){
+            hit_left = collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144, -60, 0, 64, window_h)// first four is sprite, vice versa
+            hit_right = collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144, window_h-4,0,64,window_h)
+            hit_down = collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144, 0,window_h-4,window_h,0)
+            hit_up = collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,0,-60,window_h,64)
+
+            fill(0,0,0,0)
+
+            rect(Xmap_sprite+1550,Ymap_sprite+450,900,50)//up
+            rect(Xmap_sprite+1130,Ymap_sprite+1675,550,50)
+            rect(Xmap_sprite+2270,Ymap_sprite+1675,550,50)
+
+            rect(Xmap_sprite+1680,Ymap_sprite+450,50,1275)//left
+            rect(Xmap_sprite+1130,Ymap_sprite+1675,50,1250)
+
+            rect(Xmap_sprite+2270,Ymap_sprite+450,50,1275)//right
+            rect(Xmap_sprite+2770,Ymap_sprite+1675,50,1250)
+
+            rect(Xmap_sprite+1130,Ymap_sprite+2875,1700,50)//down
+
+            if ((collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1550,Ymap_sprite+450,900,50))||((collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1130,Ymap_sprite+1675,550,50))||(collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2270,Ymap_sprite+1675,550,50)))) {
+                hit_up = true
+            }
+            if ((collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1680,Ymap_sprite+450,50,1275))||(collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1130,Ymap_sprite+1675,50,1250))){
+                hit_left = true
+            }
+            if (((collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2270,Ymap_sprite+450,50,1275))||(collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+2770,Ymap_sprite+1675,50,1250)))){
+                hit_right = true 
+            }
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1130,Ymap_sprite+2875,1700,50)){
+                hit_down = true
+            }
+            
+
+        }
+
+        function ai_hitbox(){
+            rect(Xmap_sprite+1900,Ymap_sprite+2800,200,100)
+            if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1900,Ymap_sprite+2800,200,100)){
+                window.alert("550W: Im going to kill you, and throw you in the particle accelarator above you :].")
+                window.location.href = 'MOSS.html' 
+                noLoop()
+            }
+        }
+
+        function preload() {
+            window.alert("C0Me STRaIgHT DOWń :]")
+            sprites()
+            map_sprite = loadImage('mnserv.png')
+        }
+
+        function setup() {
+            canvas = createCanvas(window_h,window_h)
+            map_sprite.resize(4000,4000)
+        }
+
+        function draw() {
+            // background('red')
+            clear()
+            
+            map_movement()
+            noStroke()
+            
+            player_sprite()
+            player_movement()
+            border()
+            ai_hitbox()
+            console.log(Xmap_sprite,Ymap_sprite)
+
+            if (keyIsDown(192)) {
+                stroke('pink')
+            }
+        }
+
+
+
+
+
+
+    </script>
+</body>
+</html>
