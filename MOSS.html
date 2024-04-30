@@ -87,8 +87,34 @@
         let mossPNG 
         let mossHealth = 100
         let mossX = 0
+        let mossY = window_h/2-100
         let dio1 = false
         let hit1 = false
+        let resetTimer1 = false
+        
+        let rect3display = false
+
+        let xtb5 = 0
+        let ytb5 = 0
+
+        let winConf 
+        let lazer = false
+
+        let forkliftNum2 = 0
+        let Xforklift2 = 0
+        let Ylzr2 = 0
+        let Yforklift2 = 0
+
+        let atk3 = false
+        let yplm = false
+
+        let thunder
+        let forkliftSound
+
+        let thun1
+        let thun2
+        let flfx1
+
 
         function sprites(){
             player_sprite_idle_direction_left = createImg('astrobob_left.gif')
@@ -328,9 +354,42 @@
             rect(window_h/2-120,50,240*hpLength,50,10)
                 
     
-                if ((health < 100)){
-                    health += 0.01
+            if ((health < 100)){
+                health += 0.01
+            }
+            if (health<1) {
+                if (sprite_direction){
+                    deadLeft_sprite.show()
                 }
+                if (!sprite_direction) {
+                    deadRight_sprite.show()
+                }
+                window.alert('YOU ARE DEAD')
+                location.reload()
+                player_sprite_idle_direction_left.hide()
+                player_sprite_idle_direction_right.hide()
+                player_sprite_run_right.hide()
+                player_sprite_run_left.hide()
+                
+                noLoop()
+            }
+        }
+        function MOSSBAR(){
+            let HPBarTriggered = true
+            //health bar outline
+            stroke(0)
+            fill(255)
+                
+            rect(window_h/2-120,window_h-100,240,50,10)
+    
+            //display health
+            let mosshpLength = (mossHealth/100)
+            noStroke()
+            fill('red')
+            rect(window_h/2-120,window_h-100,240*mosshpLength,50,10)
+                
+    
+            
         }
 
         function time() {
@@ -348,6 +407,7 @@
 
         function Phase1() {
             if ((elapsedTime>0.5)&&(!atk1)){
+                
                 fill(0,0,0,0)
                 stroke('Orange') //non physicle atks
                 rotate(radians(45))
@@ -357,6 +417,10 @@
                     
                 }
                 if (elapsedTime>1.2){
+                    if (!thun1) {
+                        thunder.play()
+                        thun1 =true
+                    }
                     rect(xTB1,yTB1+(-window_h*0.145),300,300)
                     xTB1+=12
                     
@@ -365,9 +429,11 @@
                         rect1display = true
                     }
                 }
+                
             }
 
             if ((!atk2)&&(xTB1>(window_h/16))) {
+               
                 rotate(radians(-45))
                 fill(0,0,0,0)
                 stroke('Orange') //non physicle atks / lightnign
@@ -378,6 +444,11 @@
                     Ylzr = player_y - 100
                 }
                 if (xTB1>(400)){
+                    if (!thun2) {
+                        thunder.play()
+                        thun2 = true
+                    }
+                    
                     rect(xTB2+(window_h*0.75),yTB2,200,200)
                     rect(xTB3+(window_h*0.5)-100,yTB3,200,200)
                     rect(xTB4+(window_h*0.25)-200,yTB4,200,200)
@@ -386,7 +457,15 @@
                     yTB3 +=12
                     yTB4 +=12
                     
-                    
+                    if (collideRectRect(hitbox_playerX,hitbox_playerY,75,100,xTB2+(window_h*0.75),yTB2,200,200)) {
+                        health -=2
+                    }
+                    if (collideRectRect(hitbox_playerX,hitbox_playerY,75,100,xTB3+(window_h*0.5)-100,yTB3,200,200)) {
+                        health -=2
+                    }
+                    if (collideRectRect(hitbox_playerX,hitbox_playerY,75,100,xTB4+(window_h*0.25)-200,yTB4,200,200)) {
+                        health -=2
+                    }
 
                 }
                 if (yTB4>(100)) {
@@ -398,10 +477,19 @@
                         
                 }
                 if (yTB4>(200)) {
-                    image(forkliftIMG,Xforklift-100,Ylzr-400,200,200)
-                    image(forkliftIMG,Xforklift-100,Ylzr,200,200)
-                    rect(Xforklift-100,Ylzr,200,200)
-                    rect(Xforklift-100,Ylzr-400,200,200)
+                    if (!flfx1) {
+                        forkliftSound.play()
+                        flfx1 = true
+                    }
+                    image(forkliftIMG,Xforklift-500,Ylzr-400,200,200)
+                    image(forkliftIMG,Xforklift-500,Ylzr,200,200)
+                    
+                    if (collideRectRect(hitbox_playerX,hitbox_playerY,75,100,Xforklift-500,Ylzr-400,200,200)) {
+                        health -=4
+                    }
+                    if (collideRectRect(hitbox_playerX,hitbox_playerY,75,100,Xforklift-500,Ylzr,200,200)) {
+                        health -=4
+                    }
                     Xforklift+=12
                 }
 
@@ -425,20 +513,116 @@
                     dio1 = true
                 }
                 if (!hit1) {
-                    image(mossPNG,mossX,window_h/2-100,200,200)
-                    mossX+=4
+                    image(mossPNG,mossX,mossY,200,200)
+                    if (!(mossX==window_h/2)){
+                        mossX++
+                    }
+                    
                 }
-                if (collideRectRect(hitbox_playerX,hitbox_playerY,75,100,0,window_h/2-100,200,200)&&keyIsDown(13)&&!hit1) {
+                if (collideRectRect(hitbox_playerX,hitbox_playerY,75,100,mossX,mossY,200,200)&&keyIsDown(13)&&!hit1) {
                     window.alert("WARNING! CORE DAMAGE AT 40%. IF CORE DAMAGE EXCEEDES 100%, PARTICLE ACCELRATOR WILL ACTIVATE TO COMPENSATE TO SUSTAIN DAMAGE TO BUILDING, BUT NOT TO 550W.")
-                    window.alert('550W: WHAT ARE YOU DOING TO ME. :[')
+                    winConf = window.confirm('550W: WHAT ARE YOU DOING TO ME. :[')
+                    if (winConf) {
+                        mossHealth-=random(50,60)
+                        hit1 = true
+                    }
+                    if (!winConf) {
+                        hit1 = true
+                        mossHealth-=random(50,60)
+                    }
+
                 }
             }
         }
 
 
+        let x3 = window_h
+        let y3 = 0
+        
+        let plm2 = false
+
+        let flfx2 = false
+        let flfx3 = false
+        let phase3fight = false
+         
+
+        function phase3() {
+            
+            if (hit1 &&!phase3fight){
+                if (!yplm) {
+                    Ylzr2 = player_y
+                    boss.rate(2)
+                    
+                    yplm = true
+                }
+                fill(0,0,0,0)
+                stroke('red') //non physicle atks / lightnign
+                rect(0, Ylzr2-250,window_h,500)
+                image(forkliftIMG,Xforklift2-600,Ylzr2-250,500,500)
+                Xforklift2 +=8
+                if (!flfx2) {
+                    forkliftSound.play()
+                    flfx2 = true
+                }
+
+
+                if (Xforklift2>window_h+500) {
+                    if (!plm2) {
+                        y3 = player_y
+                        plm2 = true
+                    }
+                    fill(0,0,0,0)
+                    stroke('red') //non physicle atks / lightnign
+                    rect(0, y3-250,window_h,500)
+                    image(forkliftIMG,x3+600,y3-250,500,500)
+                    x3 -=19
+                    if (!flfx3) {
+                        forkliftSound.play()
+                        flfx3 = true
+                    }
+                    
+                }
+                if ((x3<-700)){
+                    phase3fight = true
+                }
+                if (collideRectRect(hitbox_playerX,hitbox_playerY,75,100,x3+600,y3-250,500,500)) {
+                    health -=2
+                }
+                if (collideRectRect(hitbox_playerX,hitbox_playerY,75,100,Xforklift2-600,Ylzr2-250,500,500)) {
+                    health -=2
+                }
+            }
+
+            
+        }
+
+        let hitMoss = false 
+        let win = false
+
+        function phase4() {
+            if (phase3fight) {
+                if (!win) {
+                    window.alert("PA SYSTEM: Warning 550W Core Temp Is too high. Starting Core Vent.") 
+                    win = true
+                }
+                mossX = window_h/2 -100
+                mossY = window_h/2 -100
+                if (!hitMoss) {
+                    image(mossPNG,mossX,mossY,200,200)
+                    if (collideRectRect(hitbox_playerX,hitbox_playerY,75,100,mossX,mossY,200,200)&&keyIsDown(13)&&!hitMoss) {
+                        window.location.href = 'win.html' 
+                    }
+                }
+
+            }
+        }
+            
 
 
 
+
+        let boss
+        let elc
 
 
 
@@ -447,12 +631,19 @@
             sprites()
             forkliftIMG = loadImage('forklift.png')
             mossPNG = loadImage('MOSS.png')
+            thunder = loadSound('thun.mp3')
+            forkliftSound = loadSound('forkliftFX.mp3')
+            boss = loadSound('boss.mp3')
+            elc = loadImage('ele')
+
             
         }
         function setup() {
             yapMoss = window.confirm("WEll, THATS AFTER IM DONE WITH YOU. :]")
             canvas = createCanvas(window_h,window_h)
             startTime = millis()
+            boss.play()
+            boss.rate(1.5)
             
         }
         function draw(){
@@ -463,10 +654,15 @@
             border()
             player_sprite()
             player_movement()
-            healthBar()
+            
             Phase1()
             phase2()
-            console.log(forkliftNum)
+            phase3()
+
+            phase4()
+            MOSSBAR()
+            healthBar()
+            console.log(collideRectRect(hitbox_playerX,hitbox_playerY,75,100,xTB1,(yTB1+(-window_h*0.145)),300,300))
         }
 
     </script>
