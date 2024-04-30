@@ -69,7 +69,26 @@
         let xTB1=0
         let yTB1=0
 
+        let atk2 = false
+        let rect2display = false
+        let xTB2 = 0
+        let yTB2 = 0
+        let xTB3 = 0
+        let yTB3 = 0
+        let xTB4 = 0
+        let yTB4 = 0
 
+        let forkliftNum = 0
+        let Xforklift = 0
+        let Ylzr
+        let Yforklift 
+        let forkliftIMG
+
+        let mossPNG 
+        let mossHealth = 100
+        let mossX = 0
+        let dio1 = false
+        let hit1 = false
 
         function sprites(){
             player_sprite_idle_direction_left = createImg('astrobob_left.gif')
@@ -109,6 +128,8 @@
             deadRight_sprite.style('position','absolute')
             deadRight_sprite.style('transform', 'translate(-50%, -50%)')
             deadRight_sprite.hide()
+
+
         }
 
         function player_sprite(){            
@@ -332,6 +353,8 @@
                 rotate(radians(45))
                 if (!rect1display) {
                     rect(0,-window_h*0.145,window_h*1.5,300)
+                    rotate(radians(-45))
+                    
                 }
                 if (elapsedTime>1.2){
                     rect(xTB1,yTB1+(-window_h*0.145),300,300)
@@ -341,6 +364,73 @@
                         //play audio
                         rect1display = true
                     }
+                }
+            }
+
+            if ((!atk2)&&(xTB1>(window_h/16))) {
+                rotate(radians(-45))
+                fill(0,0,0,0)
+                stroke('Orange') //non physicle atks / lightnign
+                if (!rect2display && yTB2<window_h/8) {
+                    rect(window_h*0.75,0,200,window_h)
+                    rect((window_h*0.5)-100,0,200,window_h)
+                    rect((window_h*0.25)-200,0,200,window_h)
+                    Ylzr = player_y - 100
+                }
+                if (xTB1>(400)){
+                    rect(xTB2+(window_h*0.75),yTB2,200,200)
+                    rect(xTB3+(window_h*0.5)-100,yTB3,200,200)
+                    rect(xTB4+(window_h*0.25)-200,yTB4,200,200)
+
+                    yTB2 +=12
+                    yTB3 +=12
+                    yTB4 +=12
+                    
+                    
+
+                }
+                if (yTB4>(100)) {
+                    
+                    stroke('red')
+                    rect(0, Ylzr,window_h,200)
+                
+                    rect(0, Ylzr-400,window_h,200)
+                        
+                }
+                if (yTB4>(200)) {
+                    image(forkliftIMG,Xforklift-100,Ylzr-400,200,200)
+                    image(forkliftIMG,Xforklift-100,Ylzr,200,200)
+                    rect(Xforklift-100,Ylzr,200,200)
+                    rect(Xforklift-100,Ylzr-400,200,200)
+                    Xforklift+=12
+                }
+
+                if (Xforklift+100>window_h){
+                    atk2 = true
+                } 
+
+
+            }
+            // if ((atk2)&&())
+
+        }
+
+        function phase2() {
+            
+            if (atk2) {
+                rotate(radians(-45))
+                if (!dio1) {
+                    window.alert("PA SYSTEM: Warning 550W Core Temp Is too high. Starting Core Vent.") 
+                    window.alert("PA SYSTEM: HEY, it's John and Theta! Hit 550W's core now with the HEAPC we gave you!. (press the ENTER key)")
+                    dio1 = true
+                }
+                if (!hit1) {
+                    image(mossPNG,mossX,window_h/2-100,200,200)
+                    mossX+=4
+                }
+                if (collideRectRect(hitbox_playerX,hitbox_playerY,75,100,0,window_h/2-100,200,200)&&keyIsDown(13)&&!hit1) {
+                    window.alert("WARNING! CORE DAMAGE AT 40%. IF CORE DAMAGE EXCEEDES 100%, PARTICLE ACCELRATOR WILL ACTIVATE TO COMPENSATE TO SUSTAIN DAMAGE TO BUILDING, BUT NOT TO 550W.")
+                    window.alert('550W: WHAT ARE YOU DOING TO ME. :[')
                 }
             }
         }
@@ -355,6 +445,9 @@
 
         function preload() {
             sprites()
+            forkliftIMG = loadImage('forklift.png')
+            mossPNG = loadImage('MOSS.png')
+            
         }
         function setup() {
             yapMoss = window.confirm("WEll, THATS AFTER IM DONE WITH YOU. :]")
@@ -372,7 +465,8 @@
             player_movement()
             healthBar()
             Phase1()
-            console.log(elapsedTime)
+            phase2()
+            console.log(forkliftNum)
         }
 
     </script>
