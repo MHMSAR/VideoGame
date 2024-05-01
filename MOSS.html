@@ -10,6 +10,7 @@
     <script src="p5.sound.js"></script>
     <title>FIGHT_%</title>
     <style>
+        @import url('https://fonts.cdnfonts.com/css/anurati');
         html, body{
             margin: 0;
             padding: 0;
@@ -18,7 +19,10 @@
             align-items: center;
             height: 100vh;
             overflow: hidden;
-            /* background-color: darkgray; */
+            font-family: 'Anurati', sans-serif;
+            text-transform: uppercase;
+            font-size: 18px;
+            background-color: darkgray;
         }
         
         
@@ -248,7 +252,8 @@
                 if (!sprite_direction) {
                     deadRight_sprite.show()
                 }
-                
+                window.alert('YOU ARE DEAD')
+                location.reload()
                 player_sprite_idle_direction_left.hide()
                 player_sprite_idle_direction_right.hide()
                 player_sprite_run_right.hide()
@@ -363,7 +368,8 @@
                 if (!sprite_direction) {
                     deadRight_sprite.show()
                 }
-                
+                window.alert('YOU ARE DEAD')
+                location.reload()
                 player_sprite_idle_direction_left.hide()
                 player_sprite_idle_direction_right.hide()
                 player_sprite_run_right.hide()
@@ -385,7 +391,7 @@
             noStroke()
             fill('red')
             rect(window_h/2-120,window_h-100,240*mosshpLength,50,10)
-                
+            
     
             
         }
@@ -417,9 +423,10 @@
                 if (elapsedTime>1.2){
                     if (!thun1) {
                         thunder.play()
-                        thun1 =true
+                        thun1 = true
                     }
                     rect(xTB1,yTB1+(-window_h*0.145),300,300)
+                    image(elc,xTB1,yTB1+(-window_h*0.145),300,300)
                     xTB1+=12
                     
                     if (xTB1>(window_h/16)) {
@@ -450,6 +457,11 @@
                     rect(xTB2+(window_h*0.75),yTB2,200,200)
                     rect(xTB3+(window_h*0.5)-100,yTB3,200,200)
                     rect(xTB4+(window_h*0.25)-200,yTB4,200,200)
+
+                    image(elc,xTB2+(window_h*0.75),yTB2,200,200)
+                    image(elc,xTB3+(window_h*0.5)-100,yTB3,200,200)
+                    image(elc,xTB4+(window_h*0.25)-200,yTB4,200,200)
+
 
                     yTB2 +=12
                     yTB3 +=12
@@ -584,7 +596,7 @@
                     phase3fight = true
                 }
                 if (collideRectRect(hitbox_playerX,hitbox_playerY,75,100,x3+600,y3-250,500,500)) {
-                    health -=2
+                    health -=6
                 }
                 if (collideRectRect(hitbox_playerX,hitbox_playerY,75,100,Xforklift2-600,Ylzr2-250,500,500)) {
                     health -=2
@@ -621,6 +633,11 @@
 
         let boss
         let elc
+        function death() {
+            if (health<1) {
+                window.location.href = 'bad.html' 
+            }
+        }
 
 
 
@@ -632,20 +649,10 @@
             thunder = loadSound('thun.mp3')
             forkliftSound = loadSound('forkliftFX.mp3')
             boss = loadSound('boss.mp3')
-            elc = loadImage('ele')
+            elc = loadImage('elc.png')
 
             
         }
-
-
-        function death() {
-            if (health<1) {
-                window.location.href = 'bad.html' 
-            }
-        }
-
-
-
         function setup() {
             yapMoss = window.confirm("WEll, THATS AFTER IM DONE WITH YOU. :]")
             canvas = createCanvas(window_h,window_h)
@@ -670,6 +677,7 @@
             phase4()
             MOSSBAR()
             healthBar()
+
             death()
             console.log(collideRectRect(hitbox_playerX,hitbox_playerY,75,100,xTB1,(yTB1+(-window_h*0.145)),300,300))
         }

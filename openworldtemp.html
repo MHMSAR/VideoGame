@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js" integrity="sha512-uaz5GpnQoE6t5echKlX8P52czvsIGgLPcvlzfvRubLZ1Hp8JemUDnbUiAahbVtPb+jUVrNETuXvAhDDF/N3M4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Includes the p5.collide2D addon library -->
+    <script defer src="https://unpkg.com/p5.collide2d"></script>
+    <script src="path/to/p5.sound.js"></script>
+    <title>Challenge</title>
+
+
+
+
+    <style>
+        html, body{
+            width:auto;
+            height:auto;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        let window_w = window.innerWidth
+        let window_h = window.innerHeight
+        let player_x 
+        let player_y
+        let mapimg 
+        let map_x = 0
+        let map_y = 0
+        let player_idle_rotation = true // true is left //right = false
+        let player_sprite_idle_direction_up
+        let player_sprite_idle_direction_right
+        let player_sprite_idle_direction_down
+        let player_sprite_idle_direction_left
+
+
+        
+        let player_sprite_idle_direction_up_preload
+        let player_sprite_idle_direction_right_preload
+        let player_sprite_idle_direction_down_preload
+        let player_sprite_idle_direction_left_preload
+
+
+
+
+        function preload(){
+
+
+
+            loadImage("astrobob_right.gif");
+
+
+            mapimg = loadImage('sans.jpg')
+            player_sprite_idle_direction_right_preload = loadImage("astrobob_right.gif"); //loads image
+            player_sprite_idle_direction_left_preload = loadImage("astrobob_left.gif"); //loads image
+
+
+            player_sprite_idle_direction_right = createImg("astrobob_right.gif"); // presnts image
+            player_sprite_idle_direction_left = createImg("astrobob_left.gif")
+        }
+
+
+        function setup() {
+            createCanvas(window_w,window_h)
+            player_x = 0    
+            player_y = window_h/2
+            player_sprite_idle_direction_right.position(player_x + (window_w*2), player_y,50,50);
+            player_sprite_idle_direction_left.position(player_x + (window_w*2), player_y,50,50);
+
+        }
+
+
+
+
+        function draw() {
+            // loads only first frame
+            // image(player_sprite_idle_direction_right, player_x, player_y,50,50);
+
+
+
+            // updates animation frames by using an html
+            // img element, positioning it over top of
+            // the canvas.
+            
+
+
+
+
+
+
+            //grab rectangle from the center
+            
+            if (keyIsDown(LEFT_ARROW)&&(player_x>20)) { // THIS IS LEFT
+                
+                player_x -= 5;
+                map_x += 5
+                player_sprite_idle_direction_left.position(player_x, player_y,50,50);// acitve 
+                player_idle_rotation = true
+                player_sprite_idle_direction_right.position(player_x + (window_w*2), player_y,50,50); // passive
+                
+            }
+
+            if (keyIsDown(RIGHT_ARROW)&&(window_w-28>player_x)) {// THIS IS RIGHT
+                
+                player_x += 5;
+                map_x -= 5
+                player_sprite_idle_direction_right.position(player_x, player_y,50,50); // active
+                player_idle_rotation = false
+                player_sprite_idle_direction_left.position(player_x + (window_w*2), player_y,50,50); //pasive
+
+            }
+
+            if (keyIsDown(UP_ARROW)&&(player_y>20)) {// THIS IS UP
+                player_y -= 5;
+                if (player_idle_rotation) {
+                    player_sprite_idle_direction_left.position(player_x, player_y,50,50);// acitve 
+                    player_idle_rotation = true
+                    player_sprite_idle_direction_right.position(player_x + (window_w*2), player_y,50,50); // passive
+                }
+                if (player_idle_rotation == false){
+                    player_sprite_idle_direction_right.position(player_x, player_y,50,50); // active
+                    player_idle_rotation = false
+                    player_sprite_idle_direction_left.position(player_x + (window_w*2), player_y,50,50); //pasive
+                }
+
+
+            }
+
+            if (keyIsDown(DOWN_ARROW)&&(player_y<window_h)) { // THIS IS DOWN
+                player_y  += 5;
+                if (player_idle_rotation) {
+                    player_sprite_idle_direction_left.position(player_x, player_y,50,50);// acitve 
+                    player_idle_rotation = true
+                    player_sprite_idle_direction_right.position(player_x + (window_w*2), player_y,50,50); // passive
+                }
+                if (player_idle_rotation == false){
+                    player_sprite_idle_direction_right.position(player_x, player_y,50,50); // active
+                    player_idle_rotation = false
+                    player_sprite_idle_direction_left.position(player_x + (window_w*2), player_y,50,50); //pasive
+                }
+                
+                
+            }
+
+            
+            
+
+
+            image(mapimg,map_x,map_y,window_w*2,window_h)// MAP HERE
+
+            rectMode(CENTER)
+
+            //make rectangle
+            fill('purple')
+
+            rect(player_x+250,player_y+250,250,250)
+
+            console.log(player_x,"x",player_y,'y')
+            console.log(player_idle_rotation)
+
+            
+        }
+    </script>
+    
+</body>
+</html>

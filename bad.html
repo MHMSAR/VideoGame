@@ -39,7 +39,7 @@
 
         function videofunc(){
             video = createVideo('Bad.mp4')
-            video.size(window.innerWidth,720)
+            video.size(window.innerWidth,window.innerWidth*0.5625)
             
             video.showControls()
             video.position(0,0)
@@ -53,7 +53,7 @@
         
         function preload() {
             video = createVideo('Bad.mp4')
-            video.size(window.innerWidth,720)
+            video.size(window.innerWidth,window.innerWidth*0.5625)
             video.hide()
             video.position(0,(window.innerHeight/2-360))
         }
@@ -69,7 +69,7 @@
             if (videoPlayed) {
                 restart = window.confirm('RESTART?')
                 if (restart) {
-                    window.location.href = 'LunarLab.html' 
+                    window.location.href = 'MOSS.html' 
                     noLoop()
                 }
                 if (!restart) {

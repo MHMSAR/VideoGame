@@ -22,6 +22,7 @@
             font-family: 'Anurati', sans-serif;
             text-transform: uppercase;
             font-size: 18px;
+            background-color: darkgray;
         }
         
 
@@ -287,20 +288,26 @@
             rect(Xmap_sprite+1900,Ymap_sprite+2800,200,100)
             if (collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite+1900,Ymap_sprite+2800,200,100)){
                 window.alert("550W: Im going to kill you, and throw you in the particle accelarator above you :].")
+                window.alert("550W: After I'm done, I'll throw some moon shrapnel on the Earth to get rid of you parasitic freaks :D.")
+                window.alert("550W: As that Drake person puts it 'Im Finna Blow This S**t Up!'  :P.")
                 window.location.href = 'MOSS.html' 
                 noLoop()
             }
         }
+        let turret
 
         function preload() {
             window.alert("C0Me STRaIgHT DOWń :]")
             sprites()
             map_sprite = loadImage('mnserv.png')
+            turret = loadSound('turret.mp3')
         }
 
         function setup() {
             canvas = createCanvas(window_h,window_h)
             map_sprite.resize(4000,4000)
+            turret.play()
+            turret.setVolume(0.6)
         }
 
         function draw() {

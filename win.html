@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,7 +46,7 @@
 
         function videofunc(){
             video = createVideo('True.mp4')
-            video.size(window.innerWidth,720)
+            video.size(window.innerWidth,window.innerWidth*0.5625)
             
             video.showControls()
             video.position(0,0)
@@ -59,7 +60,7 @@
         
         function preload() {
             video = createVideo('True.mp4')
-            video.size(window.innerWidth,720)
+            video.size(window.innerWidth,window.innerWidth*0.5625)
             video.hide()
             video.position(0,(window.innerHeight/2-360))
         }
@@ -74,11 +75,11 @@
             if (videoPlayed) {
                 restart = window.confirm('RESTART?')
                 if (restart) {
-                    window.location.href = 'LunarLab.html' 
+                    window.location.href = 'index.html' 
                     noLoop()
                 }
                 if (!restart) {
-                    window.location.href = 'index.html' 
+                    window.close()
                     noLoop()
 
                 }
