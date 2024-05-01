@@ -405,6 +405,7 @@
             FDHB = collideRectRect(hitbox_playerX, hitbox_playerY, 144, 144,Xmap_sprite + 520 ,Ymap_sprite-50,50,1000)
             if ((FDHB) && (discoveredFDHB == false)) { 
                 window.alert('PA_system: ALL ARRIVING PERSONEL, PLEASE RETRIVE YOUR HEAP-C FROM THE STORAGE UNIT.')
+                niceFX.play()
                 discoveredFDHB = true
                 
             }
@@ -535,7 +536,7 @@
             // canvas.position(canvasX, canvasY) 
             
             map_sprite.resize(3700,3700)
-            niceFX.play()
+            
             niceFX.setVolume(0.5)
             window.alert('Please use the ARROW keys for movement & ENTER key for interaction with objects.')
             
