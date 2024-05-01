@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="p5.js" ></script>
+    <!-- <script defer src="https://unpkg.com/p5"></script> -->
+    <!-- Includes the p5.collide2D addon library -->
+    
+    <title>CamSAT</title>
+    <style>
+        html, body{
+            margin: 0;
+            padding: 0;
+            padding-top: 20%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            background-color: black;
+        }
+        
+    </style>
+</head>
+<body>
+    <script>
+        let video
+        let videoPlayed = false
+
+        let timerStarted = false
+        let timerStopped = false
+        let elapsedTime
+        
+        let played = false
+
+        let restart 
+        
+
+        function videofunc(){
+            video = createVideo('Bad.mp4')
+            video.size(window.innerWidth,720)
+            
+            video.showControls()
+            video.position(0,0)
+            
+            
+            video.play()
+            
+
+        }
+       
+        
+        function preload() {
+            video = createVideo('Bad.mp4')
+            video.size(window.innerWidth,720)
+            video.hide()
+            video.position(0,(window.innerHeight/2-360))
+        }
+
+        function setup() {
+            videofunc()
+            video.play()
+            video.elt.addEventListener('ended', function() {
+                videoPlayed = true;
+            });
+        }
+        function draw() {
+            if (videoPlayed) {
+                restart = window.confirm('RESTART?')
+                if (restart) {
+                    window.location.href = 'LunarLab.html' 
+                    noLoop()
+                }
+                if (!restart) {
+                    window.location.href = 'index.html' 
+                    noLoop()
+
+                }
+            }
+            
+            console.log((elapsedTime > 3 && (!played)))
+        }
+    </script>
+</body>
+</html>

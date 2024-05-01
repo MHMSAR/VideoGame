@@ -248,8 +248,7 @@
                 if (!sprite_direction) {
                     deadRight_sprite.show()
                 }
-                window.alert('YOU ARE DEAD')
-                location.reload()
+                
                 player_sprite_idle_direction_left.hide()
                 player_sprite_idle_direction_right.hide()
                 player_sprite_run_right.hide()
@@ -364,8 +363,7 @@
                 if (!sprite_direction) {
                     deadRight_sprite.show()
                 }
-                window.alert('YOU ARE DEAD')
-                location.reload()
+                
                 player_sprite_idle_direction_left.hide()
                 player_sprite_idle_direction_right.hide()
                 player_sprite_run_right.hide()
@@ -638,6 +636,16 @@
 
             
         }
+
+
+        function death() {
+            if (health<1) {
+                window.location.href = 'bad.html' 
+            }
+        }
+
+
+
         function setup() {
             yapMoss = window.confirm("WEll, THATS AFTER IM DONE WITH YOU. :]")
             canvas = createCanvas(window_h,window_h)
@@ -662,6 +670,7 @@
             phase4()
             MOSSBAR()
             healthBar()
+            death()
             console.log(collideRectRect(hitbox_playerX,hitbox_playerY,75,100,xTB1,(yTB1+(-window_h*0.145)),300,300))
         }
 
